@@ -1,11 +1,11 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getProductsService } from "../services/products.service";
+import { getProducts } from "../services/products.service";
 import { ProductFilters } from "../types";
 
-export const useProducts = (filters: ProductFilters) =>
+export const useProducts = (filters?: ProductFilters) =>
   useQuery({
     queryKey: ["products", filters],
-    queryFn: () => getProductsService({ params: filters }),
+    queryFn: () => getProducts(filters),
   });

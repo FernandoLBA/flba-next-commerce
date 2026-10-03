@@ -1,4 +1,4 @@
-import { NEXT_PUBLIC_API_URL } from "@/shared/config/envs";
+import { clientEnvs } from "@/shared/config/envs.client";
 import { ApiError } from "../../errors";
 import { RequestOptions } from "../../types";
 
@@ -8,7 +8,7 @@ export const request = async <T>(
   body?: unknown,
   { params, headers, ...init }: RequestOptions = {},
 ) => {
-  const url = new URL(path, NEXT_PUBLIC_API_URL);
+  const url = new URL(path, clientEnvs.NEXT_PUBLIC_API_URL);
 
   Object.entries(params ?? {}).forEach(([key, value]) => {
     if (value !== undefined) url.searchParams.set(key, String(value));

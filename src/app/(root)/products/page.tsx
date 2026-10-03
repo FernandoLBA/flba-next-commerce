@@ -1,9 +1,16 @@
 import { ProductsFeaturePage } from "@/features/products";
+import { ProductFilters } from "@/features/products/types";
 
-const ProductsPage = () => {
+type ProductsFeaturePage = {
+  searchParams: Promise<ProductFilters>;
+};
+
+const ProductsPage = async (props: ProductsFeaturePage) => {
+  const params = await props.searchParams;
+
   return (
     <>
-      <ProductsFeaturePage />
+      <ProductsFeaturePage {...params} />
     </>
   );
 };

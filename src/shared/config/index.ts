@@ -1,2 +1,2 @@
 export * from "./api";
-export * from "./envs";
+export { clientEnvs } from "./envs.client";

@@ -1,17 +1,19 @@
 export type ApiResponse<T> = {
-  data: Pagination<T>;
+  data: T;
   message: string;
   statusCode: number;
   success: boolean;
 };
 
 export type Pagination<T> = {
-  data: T;
-  currentPageItem: number;
-  limit: number;
-  nextPage: boolean;
+  data: T[];
   page: number;
-  previousPage: boolean;
+  limit: number;
   totalItems: number;
   totalPages: number;
+  currentPageItem: number;
+  nextPage: boolean;
+  previousPage: boolean;
 };
+
+export type PaginatedResponse<T> = ApiResponse<Pagination<T>>;

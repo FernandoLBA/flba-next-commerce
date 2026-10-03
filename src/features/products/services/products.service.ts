@@ -1,10 +1,16 @@
-import { api, RequestOptions } from "@/shared/config";
-import { ApiResponse } from "../../../shared/types/api-responde";
-import { Product } from "../types";
+import { api } from "@/shared/config";
+import { apiRoutes } from "@/shared/lib";
+import { PaginatedResponse } from "@/shared/types";
+import { Product, ProductFilters } from "../types";
 
-export const getProductsService = async (options: RequestOptions) => {
-  return await api.get<ApiResponse<Product[]>>(
-    "/api/v1/public/randomproducts",
-    options,
+export const getProducts = async (filters?: ProductFilters) => {
+  const products = await api.get<PaginatedResponse<Product>>(
+    apiRoutes.PRODUCTS,
+    {
+      params: filters,
+      next: { tags: ["products"] },
+    },
   );
+
+  return products.data;
 };
