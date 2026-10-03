@@ -3,11 +3,18 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --primary: #80be29;
+  --secondary: #fff;
 }
 
+/* Expone las clases en tailwind */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -16,6 +23,9 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    
+    --primary: #80be29;
+    --secondary: #fff;
   }
 }
 
