@@ -9,8 +9,4 @@ export const navLinks = [
     label: "Categories",
     url: "/categories",
   },
-  {
-    label: "Cart",
-    url: appRoutes.CART.BASE,
-  },
 ];

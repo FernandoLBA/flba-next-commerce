@@ -1,2 +1,1 @@
-export * from "./constants/appRoutes";
-export * from "./constants/appSettings";
+export * from "./constants";

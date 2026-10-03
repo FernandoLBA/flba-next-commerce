@@ -6,8 +6,8 @@ import { navLinks } from "../lib/constants/nav-links";
 
 export const NavBar = () => {
   return (
-    <nav className="w-full border-2 border-green-500 fixed">
-      <div className="border border-red-500 flex justify-between h-12 items-center px-6">
+    <nav className="w-full border-b fixed">
+      <div className="flex justify-between h-12 items-center px-6">
         {/* Marca */}
         <Link href={appRoutes.HOME.BASE}>
           <div className="flex gap-1">
@@ -23,7 +23,7 @@ export const NavBar = () => {
         </div>
 
         {/* Menu desktop */}
-        <div className="hidden md:flex flex-between gap-2">
+        <div className="hidden md:flex flex-between gap-3">
           {navLinks.map((nl) => (
             <AppLink key={nl.label} href={nl.url}>
               {nl.label}
@@ -32,7 +32,9 @@ export const NavBar = () => {
         </div>
 
         <div className="hidden md:block">
-          <ShoppingCart />
+          <AppLink href={appRoutes.CART.BASE}>
+            <ShoppingCart />
+          </AppLink>
         </div>
       </div>
     </nav>
