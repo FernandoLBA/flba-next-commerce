@@ -19,3 +19,9 @@
     overflow: hidden;
   }
 }
+
+@mixin basic-animation() {
+  transition: all;
+  animation: ease-in-out;
+  animation-duration: 300ms;
+}

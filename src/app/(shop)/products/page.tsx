@@ -1,4 +1,8 @@
-import { type ProductFilters, ProductsFeatureView } from "@/features/products";
+import {
+  getProducts,
+  type ProductFilters,
+  ProductsFeatureView,
+} from "@/features/products";
 
 type ProductListingPage = {
   searchParams: Promise<ProductFilters>;
@@ -6,17 +10,9 @@ type ProductListingPage = {
 
 const ProductListingPage = async (props: ProductListingPage) => {
   const filters = await props.searchParams;
+  const products = await getProducts(filters);
 
-  return (
-    <>
-      <ProductsFeatureView
-        filters={{
-          ...filters,
-          page: Number(filters.page) > 0 ? Number(filters.page) : 1,
-        }}
-      />
-    </>
-  );
+  return <ProductsFeatureView paginatedProducts={products} />;
 };
 
 export default ProductListingPage;

@@ -1,27 +1,30 @@
-import { Pagination } from "@/shared/components/ui";
-import { getProducts } from "../services/products.service";
-import type { Product, ProductFilters } from "../types/product.types";
+import { Pagination as AppPagination } from "@/shared/components/ui";
+import { type Pagination } from "../../../shared/types/api-response";
+import { ProductCard } from "../components/product-card/product-card";
+import type { Product } from "../types/product.types";
 
 export const ProductsFeatureView = async ({
-  filters,
+  paginatedProducts,
 }: {
-  filters: ProductFilters;
+  paginatedProducts: Pagination<Product>;
 }) => {
-  const page = filters.page ?? 1;
-  const limit = filters.limit ?? 10;
-  const products = await getProducts({
-    category: filters.category || undefined,
-    page,
-    limit,
-  });
+  const { data: products, page, totalPages } = paginatedProducts;
 
   return (
-    <>
-      {products.data.map((product: Product) => (
-        <p key={product.id}>{product.title}</p>
-      ))}
+    <section className="w-full flex flex-col items-center">
+      <div className="w-full max-w-7xl">
+        <h1 className="self-start text-xl md:text-2xl font-bold mb-8">
+          Products
+        </h1>
 
-      <Pagination page={page} totalPages={products.totalPages} />
-    </>
+        <div className="grid grid-cols-2 gap-2 md:gap-4 lg:grid-cols-4">
+          {products.map((product: Product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      </div>
+
+      <AppPagination page={page} totalPages={totalPages} />
+    </section>
   );
 };

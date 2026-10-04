@@ -8,4 +8,7 @@ export const appRoutes = {
   CART: {
     BASE: "/cart",
   },
+  IMAGES: {
+    BASE: '/images'
+  }
 };

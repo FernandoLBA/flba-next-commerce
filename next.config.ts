@@ -6,6 +6,14 @@ const nextConfig: NextConfig = {
   sassOptions: {
     loadPaths: [path.join(process.cwd(), "src/styles")],
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: 'cdn.dummyjson.com*',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

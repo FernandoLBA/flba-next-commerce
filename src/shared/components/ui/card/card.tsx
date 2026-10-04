@@ -2,26 +2,43 @@ import { cn } from "@/shared/utils/cn";
 import { ComponentProps } from "react";
 
 export const Card = ({ className, ...props }: ComponentProps<"article">) => (
-  <article className={cn("", className)} {...props} />
+  <article
+    className={cn(
+      "flex h-full w-full flex-col overflow-hidden rounded-lg border border-primary",
+      className,
+    )}
+    {...props}
+  />
 );
 
 export const CardMedia = ({ className, ...props }: ComponentProps<"div">) => (
-  <div className={cn("", className)} {...props} />
+  <div
+    className={cn(
+      "relative aspect-square overflow-hidden border-b border-primary",
+      className,
+    )}
+    {...props}
+  />
 );
 
 export const CardContent = ({ className, ...props }: ComponentProps<"div">) => (
-  <div className={cn("", className)} {...props} />
+  <div className={cn("flex-1 p-3 md:p-4", className)} {...props} />
 );
 
 export const CardTitle = ({ className, ...props }: ComponentProps<"h3">) => (
-  <h3 className={cn("", className)} {...props} />
+  <h3 className={cn("text-gray-300 uppercase", className)} {...props} />
 );
 
 export const CardDescription = ({
   className,
   ...props
-}: ComponentProps<"p">) => <p className={cn("", className)} {...props} />;
+}: ComponentProps<"p">) => (
+  <p className={cn("text-xs text-primary", className)} {...props} />
+);
 
 export const CardFooter = ({ className, ...props }: ComponentProps<"div">) => (
-  <div className={cn("", className)} {...props} />
+  <div
+    className={cn("mt-auto w-full border-t border-primary", className)}
+    {...props}
+  />
 );

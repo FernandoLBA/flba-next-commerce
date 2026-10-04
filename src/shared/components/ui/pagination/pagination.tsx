@@ -41,8 +41,8 @@ export const Pagination = ({ page, totalPages }: PaginationProps) => {
           <AppLink
             href={buildHref(selectedPage)}
             className={cn(
-              "hover:font-bold",
-              selectedPage === parsedPage && "text-primary font-bold",
+              `hover:font-bold",
+              ${selectedPage == parsedPage && "text-primary font-bold"}`,
             )}
             key={index}
           >
