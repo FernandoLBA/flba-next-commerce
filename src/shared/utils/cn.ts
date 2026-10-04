@@ -2,8 +2,7 @@ import clsx, { type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 /**
- * Join tailwind classes with clsx library
- *
+ * Unne las clases de tailwind con la librería clsx
  * @param inputs
  * @returns
  */

@@ -26,14 +26,14 @@ export const CardContent = ({ className, ...props }: ComponentProps<"div">) => (
 );
 
 export const CardTitle = ({ className, ...props }: ComponentProps<"h3">) => (
-  <h3 className={cn("text-gray-300 uppercase", className)} {...props} />
+  <h3 className={cn("text-primary font-semibold", className)} {...props} />
 );
 
 export const CardDescription = ({
   className,
   ...props
 }: ComponentProps<"p">) => (
-  <p className={cn("text-xs text-primary", className)} {...props} />
+  <p className={cn("uppercase", className)} {...props} />
 );
 
 export const CardFooter = ({ className, ...props }: ComponentProps<"div">) => (

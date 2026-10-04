@@ -40,13 +40,15 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       </AppLink>
 
       <CardContent>
-        <CardDescription>{product.brand}</CardDescription>
-        <CardTitle className="text-sm">{truncate(product.title, 25)}</CardTitle>
+        <CardTitle className="text-xs">{product.brand}</CardTitle>
+        <CardDescription className="text-sm">
+          {truncate(product.title, 25)}
+        </CardDescription>
       </CardContent>
 
       <CardFooter>
         <div className="flex items-center justify-between px-3 py-2 md:px-4">
-          <p className="text-red-500 line-through">
+          <p className="text-destructive line-through text-sm">
             {`${appSettings.CURRENCY.SYMBOL} ${(product.price + product.price * 0.3).toFixed(2)}`}
           </p>
 

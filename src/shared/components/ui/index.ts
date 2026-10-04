@@ -9,3 +9,5 @@ export {
   CardTitle,
 } from "./card/card";
 export { Pagination } from "./pagination/pagination";
+export { StatusMessage } from "./status-message/status-message";
+export { ThemeToggle } from "./theme-toggle/theme-toggle";

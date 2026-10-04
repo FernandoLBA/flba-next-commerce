@@ -2,12 +2,13 @@ import { cn } from "@/shared/utils/cn";
 import { ComponentProps } from "react";
 
 type AppButtonProps = ComponentProps<"button"> & {
-  variant?: "default" | "outline";
+  variant?: "default" | "outline" | "ghost";
 };
 
 const variants = {
-  default: "bg-primary text-white",
+  default: "bg-primary text-primary-foreground",
   outline: "bg-transparent border border-primary text-primary",
+  ghost: "p-0 bg-transparent text-primary cursor-pointer",
 };
 
 export const AppButton = ({

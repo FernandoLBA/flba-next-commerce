@@ -24,37 +24,45 @@ export const Pagination = ({ page, totalPages }: PaginationProps) => {
   };
 
   return (
-    <div className="flex gap-2 my-4 items-center">
+    <div className="flex gap-2 my-8 items-center text-secondary">
       {parsedPage !== 1 && (
         <AppLink
           href={buildHref(parsedPage - 1)}
-          className={cn("hover:font-bold")}
+          className={cn(
+            "hover:opacity-80 bg-primary p-1 rounded-full text-primary-foreground",
+          )}
         >
           <ChevronLeft />
         </AppLink>
       )}
 
-      {Array.from({ length: +totalPages }).map((x, index) => {
-        const selectedPage = index + 1;
+      <div className="hidden md:flex gap-2">
+        {Array.from({ length: +totalPages }).map((x, index) => {
+          const selectedPage = index + 1;
 
-        return (
-          <AppLink
-            href={buildHref(selectedPage)}
-            className={cn(
-              `hover:font-bold",
-              ${selectedPage == parsedPage && "text-primary font-bold"}`,
-            )}
-            key={index}
-          >
-            {selectedPage}
-          </AppLink>
-        );
-      })}
+          return (
+            <AppLink
+              href={buildHref(selectedPage)}
+              className={cn(
+                "hover:font-bold text-foreground",
+                selectedPage === parsedPage && "border-b font-extrabold",
+              )}
+              key={index}
+            >
+              {selectedPage}
+            </AppLink>
+          );
+        })}
+      </div>
+
+      <div className="block md:hidden">{parsedPage}</div>
 
       {parsedPage < totalPages && (
         <AppLink
           href={buildHref(parsedPage + 1)}
-          className={cn("hover:font-bold")}
+          className={cn(
+            "hover:opacity-80 bg-primary p-1 rounded-full text-primary-foreground",
+          )}
         >
           <ChevronRight />
         </AppLink>

@@ -6,11 +6,11 @@ export const navLinks = [
     url: appRoutes.PRODUCTS.BASE,
   },
   {
-    label: "Nosotros",
-    url: appRoutes.PRODUCTS.BASE,
+    label: "ErrorPage",
+    url: appRoutes.ERROR.BASE,
   },
   {
-    label: "Contacto",
-    url: appRoutes.PRODUCTS.BASE,
+    label: "NotFoundPage",
+    url: appRoutes.NOT_FOUND.BASE,
   },
-];
+] as const;

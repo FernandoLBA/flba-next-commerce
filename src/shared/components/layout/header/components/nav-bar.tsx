@@ -1,10 +1,16 @@
-import { AppLink } from "@/shared/components/ui";
+"use client";
+
+import { AppLink, ThemeToggle } from "@/shared/components/ui";
 import { appRoutes } from "@/shared/constants/app.routes";
 import { appSettings } from "@/shared/constants/app.settings";
+import { cn } from "@/shared/utils/cn";
 import { Code, EllipsisVertical, ShoppingCart, User } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { navLinks } from "../lib/constants/nav-links";
 
 export const NavBar = () => {
+  const pathname = usePathname();
+
   return (
     <nav className="w-full border-b fixed bg-black text-primary z-10">
       <div className="flex justify-between h-12 items-center px-6">
@@ -13,7 +19,9 @@ export const NavBar = () => {
           <div className="flex items-center gap-1">
             <Code />
 
-            <span className="hidden md:block text-sm">{appSettings.APP_NAME}</span>
+            <span className="text-sm">
+              {appSettings.APP_NAME}
+            </span>
           </div>
         </AppLink>
 
@@ -25,23 +33,31 @@ export const NavBar = () => {
         {/* Menu desktop */}
         <div className="hidden md:flex justify-between gap-3">
           {navLinks.map((nl) => (
-            <AppLink key={nl.label} href={nl.url}>
+            <AppLink
+              className={cn(
+                `${pathname.includes(nl.label.toLowerCase()) && "underline"}`,
+              )}
+              key={nl.label}
+              href={nl.url}
+            >
               {nl.label}
             </AppLink>
           ))}
         </div>
 
         <div className="hidden md:block">
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
+            <ThemeToggle />
+
             <AppLink href={appRoutes.CART.BASE}>
               <ShoppingCart />
             </AppLink>
 
             <AppLink
-              className="bg-primary rounded-full p-1 text-white"
-              href={appRoutes.CART.BASE}
+              className="bg-primary rounded-full p-1 text-primary-foreground"
+              href={appRoutes.NOT_FOUND.BASE}
             >
-              <User color="#fff" size={20} />
+              <User size={17} />
             </AppLink>
           </div>
         </div>
