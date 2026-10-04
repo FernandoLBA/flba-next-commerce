@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../services/products.service";
-import { ProductFilters } from "../types";
+import { ProductFilters } from "../types/product.types";
 
 export const useProducts = (filters?: ProductFilters) =>
   useQuery({

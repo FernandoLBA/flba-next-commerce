@@ -1,9 +1,12 @@
-import { Pagination } from "@/shared/components";
-import { getProducts } from "./services";
-import { ProductFilters } from "./types";
+import { Pagination } from "@/shared/components/ui";
+import { getProducts } from "../services/products.service";
+import type { Product, ProductFilters } from "../types/product.types";
 
-export const ProductsFeaturePage = async (props: ProductFilters) => {
-  const filters = props;
+export const ProductsFeatureView = async ({
+  filters,
+}: {
+  filters: ProductFilters;
+}) => {
   const page = filters.page ?? 1;
   const limit = filters.limit ?? 10;
   const products = await getProducts({
@@ -14,11 +17,10 @@ export const ProductsFeaturePage = async (props: ProductFilters) => {
 
   return (
     <>
-      {products.data.map((product) => (
+      {products.data.map((product: Product) => (
         <p key={product.id}>{product.title}</p>
       ))}
 
-      {/* Paginado */}
       <Pagination page={page} totalPages={products.totalPages} />
     </>
   );

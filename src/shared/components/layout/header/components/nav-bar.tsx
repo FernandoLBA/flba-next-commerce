@@ -1,21 +1,21 @@
 import { AppLink } from "@/shared/components/ui";
-import { appRoutes, appSettings } from "@/shared/lib";
+import { appRoutes } from "@/shared/constants/app.routes";
+import { appSettings } from "@/shared/constants/app.settings";
 import { Code, EllipsisVertical, ShoppingCart } from "lucide-react";
-import Link from "next/link";
 import { navLinks } from "../lib/constants/nav-links";
 
 export const NavBar = () => {
   return (
-    <nav className="w-full border-b fixed">
+    <nav className="w-full border-b fixed bg-black text-primary">
       <div className="flex justify-between h-12 items-center px-6">
         {/* Marca */}
-        <Link href={appRoutes.HOME.BASE}>
+        <AppLink href={appRoutes.HOME.BASE}>
           <div className="flex gap-1">
             <Code />
 
             <span className="hidden md:block">{appSettings.APP_NAME}</span>
           </div>
-        </Link>
+        </AppLink>
 
         {/* Icono menu mobile */}
         <div className="block md:hidden cursor-pointer">

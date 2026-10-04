@@ -1,5 +1,5 @@
-import { request } from "./lib";
-import { RequestOptions } from "./types";
+import { request } from "./request";
+import { RequestOptions } from "./api.types";
 
 interface Api {
   get: <T>(path: string, options?: RequestOptions) => Promise<T>;

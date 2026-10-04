@@ -1,5 +1,5 @@
 import { serverEnvs } from "@/shared/config/envs.server";
-import { appSettings } from "@/shared/lib";
+import { appSettings } from "@/shared/constants/app.settings";
 import { QueryProvider } from "@/shared/providers/query-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";

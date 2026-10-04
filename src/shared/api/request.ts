@@ -1,6 +1,6 @@
 import { clientEnvs } from "@/shared/config/envs.client";
-import { ApiError } from "../../errors";
-import { RequestOptions } from "../../types";
+import { ApiError } from "./errors";
+import { RequestOptions } from "./api.types";
 
 export const request = async <T>(
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",

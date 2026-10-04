@@ -1,12 +1,8 @@
-import { appRoutes } from "@/shared/lib";
+import { appRoutes } from "@/shared/constants/app.routes";
 
 export const navLinks = [
   {
     label: "Products",
     url: appRoutes.PRODUCTS.BASE,
-  },
-  {
-    label: "Categories",
-    url: "/categories",
   },
 ];
