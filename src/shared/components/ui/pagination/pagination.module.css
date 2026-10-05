@@ -2,7 +2,7 @@
 
 @layer components {
   .root {
-    @apply my-8 flex items-center gap-2 text-secondary;
+    @apply my-8 flex items-center gap-2;
   }
 
   .pages {
@@ -22,6 +22,6 @@
   }
 
   .mobilePage {
-    @apply typo-label block md:hidden;
+    @apply typo-label block text-foreground border-b font-bold md:hidden;
   }
 }

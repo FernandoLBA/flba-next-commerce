@@ -18,7 +18,7 @@
   --primary: #80be29;
   --primary-foreground: #111111;
   --primary-text: #4d7c0f;
-  --secondary: #ffffff;
+  --secondary: #f0eeee; /* fondo suave, un tono sobre --background */
   --destructive: #dc2626;
 }
 
@@ -29,6 +29,7 @@
   --foreground: #ededed;
   --muted: #9ca3af;
   --border: #404040;
+  --secondary: #333333;
   --primary-text: #80be29;
   --destructive: #f87171;
 }

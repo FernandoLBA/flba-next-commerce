@@ -16,6 +16,13 @@ export const appMessages = {
     BACK_HOME_BUTTON: "Volver al inicio",
     REFERENCE: "Referencia:",
   },
+  MENU: {
+    TITLE: "Menú",
+    CATEGORIES: "Categorías",
+    SEE_ALL: "Ver todas",
+    OPEN: "Abrir menú",
+    CLOSE: "Cerrar menú",
+  },
   PRODUCT_DETAIL: {
     BREADCRUMB: "Ruta de navegación",
     HOME: "Inicio",
