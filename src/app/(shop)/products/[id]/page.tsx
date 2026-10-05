@@ -1,9 +1,14 @@
-import { getProductById } from "@/features/products";
+import {
+  getProductById,
+  ProductDetailView,
+  ProductJsonLd,
+} from "@/features/products";
+import { ApiError } from "@/shared/api/errors";
+import { serverEnvs } from "@/shared/config/envs.server";
 import { appRoutes } from "@/shared/constants/app.routes";
 import { appSettings } from "@/shared/constants/app.settings";
 import { truncate } from "@/shared/utils/truncate";
 import { Metadata } from "next";
-import { ApiError } from "next/dist/server/api-utils";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
@@ -11,13 +16,14 @@ type ProductDetailsPageProps = {
   params: Promise<{ id: string }>;
 };
 
-export const getProductByIdOrNotFound = cache(async (id: string) => {
-  try {
-    const product = await getProductById(id);
+// Una sola lectura por petición (la comparten generateMetadata y la página).
+const getProductByIdOrNotFound = cache(async (id: string) => {
+  if (!/^\d+$/.test(id)) notFound();
 
-    return product;
+  try {
+    return await getProductById(id);
   } catch (error) {
-    if (error instanceof ApiError && error.statusCode === 404) notFound();
+    if (error instanceof ApiError && error.status === 404) notFound();
 
     throw error;
   }
@@ -28,7 +34,7 @@ export const generateMetadata = async ({
 }: ProductDetailsPageProps): Promise<Metadata> => {
   const { id } = await params;
   const product = await getProductByIdOrNotFound(id);
-  const url = `${appRoutes.PRODUCTS.BASE}/${product.id}`;
+  const url = appRoutes.PRODUCTS.byId(String(product.id));
 
   const description =
     truncate(product.description) || appSettings.APP_DESCRIPTION;
@@ -64,8 +70,18 @@ const ProductDetailsPage = async (props: {
 }) => {
   const { id } = await props.params;
   const product = await getProductByIdOrNotFound(id);
+  const url = new URL(
+    appRoutes.PRODUCTS.byId(String(product.id)),
+    serverEnvs.APP_SERVER_URL,
+  ).toString();
 
-  return <>Product Details {product.title}</>;
+  return (
+    <>
+      <ProductJsonLd product={product} url={url} />
+
+      <ProductDetailView product={product} />
+    </>
+  );
 };
 
 export default ProductDetailsPage;

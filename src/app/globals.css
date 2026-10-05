@@ -3,7 +3,9 @@
 /* `dark:` sigue al atributo que escribe next-themes, no solo al sistema operativo */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-/* Tokens de diseño: aquí solo se definen los valores por tema (light / dark) */
+/* 
+ * Tokens de diseño: aquí solo se definen los valores por tema (light / dark) 
+ */
 :root {
   color-scheme: light;
 
@@ -31,7 +33,9 @@
   --destructive: #f87171;
 }
 
-/* Expone las clases en tailwind */
+/* 
+ * Expone las clases en tailwind 
+ */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -52,6 +56,9 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/*
+ * Comportamiento flexbox
+ */
 @utility flex-x-between {
   @apply flex items-center justify-between;
 }
@@ -63,8 +70,8 @@
   @apply flex items-center justify-end;
 }
 
-/* Corregir */
-@utility flex-y-end { 
+/*! Corregir */
+@utility flex-y-end {
   @apply flex flex-col place-content-end;
 }
 
@@ -103,7 +110,7 @@
   @apply text-lg font-semibold;
 }
 @utility typo-price-old {
-  @apply text-sm line-through;
+  @apply text-sm;
 }
 @utility typo-currency {
   @apply align-super text-xs;
@@ -117,4 +124,41 @@ body {
   background: var(--background);
   color: var(--foreground);
   @apply font-sans typo-body;
+}
+
+/*
+ * Reglas globales. Van en @layer base para que cualquier utilidad de Tailwind
+ * o estilo de componente las pueda sobrescribir.
+ */
+@layer base {
+  /* Dialog (drawer, modales): colores del tema y sin el padding del navegador */
+  dialog {
+    @apply bg-background p-0 text-foreground;
+  }
+
+  dialog::backdrop {
+    background: rgb(0 0 0 / 0.5);
+  }
+
+  /* Esta clase inactiva el scroll de la página mientras hay un dialog abierto */
+  body:has(dialog[open]) {
+    @apply overflow-hidden;
+  }
+
+  /* Aplica el cursor pointer a los links y buttons con role button */
+  :where(a[href], button, [role="button"], summary) {
+    cursor: pointer;
+  }
+  
+  /* Aplica el cursor pointer not-allowed a los buttons desactivados (disabled) */
+  :where(button:disabled, [role="button"][aria-disabled="true"]) {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  /* Foco visible para quien navega con teclado */
+  :where(a, button, [role="button"], summary):focus-visible {
+    outline: 2px solid var(--primary-text);
+    outline-offset: 2px;
+  }
 }

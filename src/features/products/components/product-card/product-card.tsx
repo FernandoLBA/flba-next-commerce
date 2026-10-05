@@ -14,9 +14,9 @@ import { appRoutes } from "@/shared/constants/app.routes";
 import { appSettings } from "@/shared/constants/app.settings";
 import { addPercentage } from "@/shared/utils/percentage";
 import { truncate } from "@/shared/utils/truncate";
-import { Star } from "lucide-react";
 import Image from "next/image";
 import { Product } from "../../types/product.types";
+import { ProductStars } from "../product-stars/product-stars";
 
 type ProductCardProps = {
   product: Product;
@@ -59,13 +59,10 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
       <CardFooter>
         <div className="flex-x-between px-4">
-          <div className="flex-center gap-1">
-            <Star className="size-4 text-yellow-500 fill-yellow-500" />
-            <span className="typo-body-sm">{product.rating}</span>
-          </div>
+          <ProductStars value={product.rating} />
 
           <div className=" px-3 py-2 md:px-0">
-            <p className="typo-price-old text-destructive">
+            <p className="text-xs line-through md:typo-price-old text-destructive">
               {`${appSettings.CURRENCY.SYMBOL} ${addPercentage(product.price, product.discountPercentage)}`}
             </p>
 
@@ -78,7 +75,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           </div>
         </div>
 
-        <AppButton className="w-full rounded-none">Agregar al carro</AppButton>
+        <AppButton type="button" className="w-full rounded-none">
+          Agregar al carro
+        </AppButton>
       </CardFooter>
     </Card>
   );

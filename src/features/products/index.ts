@@ -13,7 +13,7 @@ export type {
   ProductFilters,
   ProductReview,
   ProductSortBy,
-  ProductSummary,
   SortOrder,
 } from "./types/product.types";
+export { ProductDetailView } from "./views/product-detail-view";
 export { ProductsFeatureView } from "./views/products-feature-view";

@@ -1,12 +1,13 @@
 "use client";
 
-import { AppLink, ThemeToggle } from "@/shared/components/ui";
+import { AppCartButton, AppLink, ThemeToggle } from "@/shared/components/ui";
 import { appRoutes } from "@/shared/constants/app.routes";
 import { appSettings } from "@/shared/constants/app.settings";
 import { cn } from "@/shared/utils/cn";
-import { Code, EllipsisVertical, ShoppingCart } from "lucide-react";
+import { Code } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { navLinks } from "../lib/constants/nav-links";
+import { MobileMenu } from "./mobile-menu/mobile-menu";
 
 export const NavBar = () => {
   const pathname = usePathname();
@@ -24,9 +25,7 @@ export const NavBar = () => {
         </AppLink>
 
         {/* Icono menu mobile */}
-        <div className="block md:hidden cursor-pointer">
-          <EllipsisVertical />
-        </div>
+        <MobileMenu />
 
         {/* Menu desktop */}
         <div className="hidden md:flex justify-between gap-3">
@@ -47,9 +46,7 @@ export const NavBar = () => {
           <div className="flex gap-4 items-center">
             <ThemeToggle />
 
-            <AppLink href={appRoutes.CART.BASE}>
-              <ShoppingCart />
-            </AppLink>
+            <AppCartButton />
           </div>
         </div>
       </div>

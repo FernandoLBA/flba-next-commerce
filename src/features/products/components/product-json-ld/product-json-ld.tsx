@@ -12,7 +12,7 @@ export const ProductJsonLd = ({ product, url }: ProductJsonLdProps) => {
     image: product.images,
     sku: String(product.id),
     category: product.category,
-    brand: { "@type": "Brand", name: product.brand },
+    brand: product.brand ? { "@type": "Brand", name: product.brand } : undefined,
     offers: {
       "@type": "Offer",
       url,

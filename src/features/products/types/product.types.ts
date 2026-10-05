@@ -29,20 +29,6 @@ export type Product = {
   images: string[];
 };
 
-/** Lo que necesita el listado (se pide con `select=`, sin el detalle completo). */
-export type ProductSummary = Pick<
-  Product,
-  | "id"
-  | "title"
-  | "category"
-  | "brand"
-  | "price"
-  | "discountPercentage"
-  | "rating"
-  | "stock"
-  | "thumbnail"
->;
-
 export type ProductCategory = {
   slug: string;
   name: string;

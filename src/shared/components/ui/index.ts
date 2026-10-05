@@ -1,5 +1,6 @@
 export { AppBadge } from "./app-badge/app-badge";
 export { AppButton } from "./app-button/app-button";
+export { AppCartButton } from "./app-cart-button/app-cart-button";
 export { AppLink } from "./app-link/app-link";
 export {
   Card,

@@ -1,21 +1,42 @@
 import { cn } from "@/shared/utils/cn";
-import { ComponentProps } from "react";
+import { ComponentProps, useEffect, useRef } from "react";
 import styles from "./app-drawer.module.css";
 
-type AppDrawerProps = ComponentProps<"div"> & {
+type AppDrawerProps = Omit<ComponentProps<"dialog">, "open" | "onClose"> & {
+  open: boolean;
+  onClose: () => void;
   side?: "right" | "left";
 };
 
 export const AppDrawer = ({
+  open,
+  onClose,
   className,
   side = "right",
   children,
   ...props
 }: AppDrawerProps) => {
+  const ref = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = ref.current;
+    if (!dialog) return;
+
+    if (open && !dialog.open) dialog.showModal();
+    if (!open && dialog.open) dialog.close();
+  }, [open]);
+
   return (
-    <div className={cn(styles.drawer, styles[side], className)} {...props}>
+    <dialog
+      ref={ref}
+      className={cn(styles.drawer, styles[side], className)}
+      onClose={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+      {...props}
+    >
       <div className={styles.inner}>{children}</div>
-    </div>
+    </dialog>
   );
 };
 

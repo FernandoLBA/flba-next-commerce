@@ -1,21 +1,34 @@
-import { AppButton, AppLink, ThemeToggle } from "@/shared/components/ui";
+import {
+  AppButton,
+  AppCartButton,
+  AppLink,
+  ThemeToggle,
+} from "@/shared/components/ui";
 import {
   AppDrawer,
   AppDrawerContent,
   AppDrawerFooter,
   AppDrawerTitle,
 } from "@/shared/components/ui/app-drawer/app-drawer";
-import { appRoutes } from "@/shared/constants/app.routes";
-import { ShoppingCart, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Footer } from "../../../footer/footer";
 import { navLinks } from "../../lib/constants/nav-links";
 
-export const MenuDrawer = () => {
+type MenuDrawerProps = {
+  open: boolean;
+  onClose: () => void;
+};
+
+export const MenuDrawer = ({ open, onClose }: MenuDrawerProps) => {
   return (
-    <AppDrawer>
+    <AppDrawer open={open} onClose={onClose}>
       <AppDrawerContent>
         <div className="relative p-4">
-          <AppButton className="absolute right-5 top-4 p-1 rounded-full">
+          <AppButton
+            aria-label="Cerrar menu"
+            className="absolute right-5 top-4 p-1 rounded-full"
+            onClick={onClose}
+          >
             <X />
           </AppButton>
 
@@ -24,7 +37,11 @@ export const MenuDrawer = () => {
           <ul className="my-6 px-2">
             {navLinks.map((nl) => (
               <li key={nl.label} className="flex-y-between gap-2 h-10">
-                <AppLink className="link-drawer" href={nl.url}>
+                <AppLink
+                  className="link-drawer"
+                  href={nl.url}
+                  onClick={onClose}
+                >
                   {nl.label}
                 </AppLink>
               </li>
@@ -36,7 +53,11 @@ export const MenuDrawer = () => {
           <ul className="mt-6 px-2">
             {navLinks.map((nl) => (
               <li key={nl.label} className="flex-y-between gap-2 h-10">
-                <AppLink className="link-drawer" href={nl.url}>
+                <AppLink
+                  className="link-drawer"
+                  href={nl.url}
+                  onClick={onClose}
+                >
                   {nl.label}
                 </AppLink>
               </li>
@@ -50,9 +71,7 @@ export const MenuDrawer = () => {
           <li className="flex-x-between gap-8 mb-1 bg-surface px-10 py-4 rounded-l-full">
             <ThemeToggle />
 
-            <AppLink href={appRoutes.CART.BASE}>
-              <ShoppingCart />
-            </AppLink>
+            <AppCartButton onClick={onClose} />
           </li>
         </ul>
 

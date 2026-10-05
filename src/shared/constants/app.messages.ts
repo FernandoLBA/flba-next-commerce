@@ -16,6 +16,17 @@ export const appMessages = {
     BACK_HOME_BUTTON: "Volver al inicio",
     REFERENCE: "Referencia:",
   },
+  PRODUCT_DETAIL: {
+    BREADCRUMB: "Ruta de navegación",
+    HOME: "Inicio",
+    PRODUCTS: "Productos",
+    ADD_TO_CART: "Agregar al carro",
+    OUT_OF_STOCK: "Agotado",
+    SHIPPING: "Envío",
+    WARRANTY: "Garantía",
+    REVIEWS: "Reseñas",
+    NO_REVIEWS: "Este producto aún no tiene reseñas.",
+  },
   HOME: {
     BANNER_ALT: "Ver todos los productos",
   },

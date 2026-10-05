@@ -7,6 +7,7 @@ import {
   ProductCategory,
   ProductFilters,
 } from "../types/product.types";
+import { productsCache } from "./products.cache";
 import { productsRoutes } from "./products.routes";
 
 //* Solo requiero estos campos en la app;
@@ -32,12 +33,15 @@ export const getProducts = async (filters?: ProductFilters) => {
       skip: (page - 1) * limit,
       select: LIST_FIELDS,
     },
-    next: { tags: ["products"], revalidate: 60 },
+    next: {
+      tags: [productsCache.tags.products],
+      revalidate: productsCache.revalidate.list,
+    },
   });
 
   return {
     products: res.products,
-    ...toPagination(res),
+    ...toPagination({ total: res.total, skip: res.skip, limit }),
   };
 };
 
@@ -46,29 +50,23 @@ export const getProducts = async (filters?: ProductFilters) => {
  * @param id
  * @returns
  */
-export const getProductById = async (id: string) => {
-  const product = await api.get<Product>(
-    productsRoutes.PRODUCTS.byProductId(id),
-    {
-      next: { tags: ["products", `product-${id}`] },
+export const getProductById = async (id: string) =>
+  await api.get<Product>(productsRoutes.PRODUCTS.byProductId(id), {
+    next: {
+      tags: [productsCache.tags.products, productsCache.tags.product(id)],
+      revalidate: productsCache.revalidate.detail,
     },
-  );
-
-  return product;
-};
+  });
 
 /**
  * Trae todas las categorías
  * Parece que esta api no acepta filtros
  * @returns
  */
-export const getCategories = async () => {
-  const categories = await api.get<ProductCategory[]>(
-    productsRoutes.CATEGORIES.BASE,
-    {
-      next: { tags: ["categories"] },
+export const getCategories = async () =>
+  await api.get<ProductCategory[]>(productsRoutes.CATEGORIES.BASE, {
+    next: {
+      tags: [productsCache.tags.categories],
+      revalidate: productsCache.revalidate.categories,
     },
-  );
-
-  return categories;
-};
+  });

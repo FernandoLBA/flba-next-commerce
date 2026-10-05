@@ -2,15 +2,15 @@
 
 @layer components {
   .drawer {
-    @apply fixed bottom-0 z-8 h-dvh w-full border-0 border-primary bg-background pt-15 md:w-80;
+    @apply fixed inset-y-0 m-0 h-dvh max-h-none w-full max-w-none border-0 border-primary md:w-80;
   }
 
   .right {
-    @apply right-0 md:border-l;
+    @apply right-0 left-auto md:border-l;
   }
 
   .left {
-    @apply left-0 md:border-r;
+    @apply left-0 right-auto md:border-r;
   }
 
   .inner {
