@@ -39,15 +39,27 @@ export const AboutView = () => {
         </h2>
         <p className="typo-body text-muted">{text.REPO_DESCRIPTION}</p>
 
-        <AppLink
-          variant="button"
-          href={appSettings.REPO_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {text.REPO_CTA}
-          <ExternalLink aria-hidden className="ml-2 size-4" />
-        </AppLink>
+        <div className="flex flex-wrap gap-3">
+          <AppLink
+            variant="button"
+            href={appSettings.REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {text.REPO_CTA}
+            <ExternalLink aria-hidden className="ml-2 size-4" />
+          </AppLink>
+
+          <AppLink
+            variant="outline"
+            href={appSettings.DEPLOY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {text.DEMO_CTA}
+            <ExternalLink aria-hidden className="ml-2 size-4" />
+          </AppLink>
+        </div>
       </section>
 
       <section aria-labelledby="about-readme-title" className="flex flex-col gap-4">

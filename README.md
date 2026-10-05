@@ -4,6 +4,7 @@ E-commerce construido con **Next.js (App Router)**, orientado a rendimiento,
 SEO y una arquitectura que escale con varios desarrolladores. Es la solución al
 [Reto Técnico 2026 — Frontend Senior](docs/Reto%20T%C3%A9cnico%202026.pdf).
 
+- **Sitio desplegado:** <https://flba-next-commerce.vercel.app>
 - **Repositorio:** <https://github.com/FernandoLBA/flba-next-commerce>
 - **Presentación del proyecto:** la página `/about` («Sobre este challenge»)
   reúne la presentación, el video explicativo y este mismo README.
@@ -11,8 +12,9 @@ SEO y una arquitectura que escale con varios desarrolladores. Es la solución al
 > **Estado:** en desarrollo, con el flujo principal completo: catálogo con
 > paginación, filtro por categoría, búsqueda y ordenamiento, detalle de
 > producto con metadata dinámica, carrito con estado global y contador en el
-> header, modo claro/oscuro y pantallas de error. Faltan las pruebas
-> automatizadas (en curso) y el streaming con skeletons. El detalle está en
+> header, modo claro/oscuro, pantallas de error y pruebas automatizadas
+> (unitarias, de integración y extremo a extremo) con integración continua.
+> Falta el streaming con skeletons. El detalle está en
 > [Estado frente al reto](#estado-frente-al-reto).
 
 ## Contenido
@@ -22,6 +24,8 @@ SEO y una arquitectura que escale con varios desarrolladores. Es la solución al
 - [Primeros pasos](#primeros-pasos)
 - [Variables de entorno](#variables-de-entorno)
 - [Scripts](#scripts)
+- [Pruebas](#pruebas)
+- [Rendimiento](#rendimiento)
 - [Arquitectura](#arquitectura)
 - [Decisiones técnicas](#decisiones-técnicas)
 - [Limitaciones conocidas](#limitaciones-conocidas)
@@ -58,6 +62,9 @@ SEO y una arquitectura que escale con varios desarrolladores. Es la solución al
 - **Sistema de diseño propio:** tokens de color por tema, escala tipográfica y
   componentes con variantes y estilos encapsulados.
 - **Límites entre capas verificados por ESLint.**
+- **Pruebas automatizadas y CI:** Vitest y React Testing Library para la lógica
+  y los componentes, Playwright para el flujo de compra, y un workflow de
+  GitHub Actions que lo ejecuta todo en cada cambio.
 
 ## Stack
 
@@ -71,7 +78,8 @@ SEO y una arquitectura que escale con varios desarrolladores. Es la solución al
 | Validación          | zod 4 (variables de entorno)                                    |
 | Tema                | next-themes                                                     |
 | Iconos y utilidades | lucide-react, clsx, tailwind-merge                              |
-| Calidad             | ESLint 9 con reglas de arquitectura                             |
+| Pruebas             | Vitest 5 y React Testing Library (unitarias e integración); Playwright (extremo a extremo) |
+| Calidad             | ESLint 9 con reglas de arquitectura; GitHub Actions               |
 | Gestor de paquetes  | pnpm                                                            |
 
 ## Primeros pasos
@@ -109,7 +117,8 @@ aplicación falla con un mensaje claro.
 | `NEXT_PUBLIC_API_URL` | Cliente  | URL base de la API de productos                               | `https://dummyjson.com` |
 | `APP_SERVER_URL`      | Servidor | URL pública del sitio; base de las URLs absolutas de metadata | `http://localhost:3000` |
 
-En producción, `APP_SERVER_URL` debe ser el dominio real del sitio. Las
+En producción, `APP_SERVER_URL` debe ser el dominio real del sitio (por ejemplo,
+`https://flba-next-commerce.vercel.app`). Las
 variables con prefijo `NEXT_PUBLIC_` se incorporan en el build, así que
 cambiarlas exige volver a construir.
 
@@ -121,11 +130,64 @@ cambiarlas exige volver a construir.
 | `pnpm build`    | Build de producción                   |
 | `pnpm start`    | Sirve el build de producción          |
 | `pnpm lint`     | ESLint, incluidas las reglas de capas |
+| `pnpm test`     | Pruebas unitarias y de integración (Vitest) |
+| `pnpm test:watch` | Vitest en modo observador          |
+| `pnpm test:e2e` | Pruebas extremo a extremo (Playwright) |
 | `pnpm rem:next` | Borra la carpeta `.next`              |
 
 Si el servidor de desarrollo muestra errores de utilidades de Tailwind
 desconocidas tras añadir una en `globals.css`, reinícialo con
 `pnpm rem:next` y `pnpm dev`.
+
+## Pruebas
+
+La estrategia prioriza lo que concentra lógica de negocio y los flujos críticos,
+no una cobertura total. Hoy hay 64 pruebas unitarias y de integración y 9 de
+extremo a extremo.
+
+| Nivel | Herramienta | Qué cubre |
+| --- | --- | --- |
+| Lógica pura | Vitest | Paginación (`skip`/`total`/`limit` a páginas, incluida la última), recortes de texto, precios y porcentajes |
+| Estado | Vitest | Store del carrito: sumar al repetir, límite de stock, cantidades, quitar, vaciar, selectores (subtotal en céntimos) y persistencia con rehidratación manual |
+| Servicios | Vitest con `fetch` simulado | Parámetros pedidos a la API, ruta por categoría, tags y `revalidate`, paginación calculada |
+| Componentes | Vitest + React Testing Library | Contador del carrito (no se pinta antes de hidratar, `99+`), botón de agregar, vista del carrito, paginación (enlaces que conservan la categoría), barra de categorías, JSON-LD |
+| Extremo a extremo | Playwright | Compra completa (filtrar por categoría, detalle, agregar, contador, carrito, persistencia tras recargar), 404 en cinco casos, metadata y datos estructurados del detalle |
+
+Las pruebas viven junto al archivo que prueban (`cart.store.test.ts`) y las de
+extremo a extremo, en `e2e/`. Dos de ellas son de regresión de fallos reales:
+la paginación de la última página y el límite de stock del carrito.
+
+```bash
+pnpm test                              # unitarias e integración
+pnpm exec playwright install chromium  # solo la primera vez
+pnpm test:e2e                          # compila, arranca el servidor en el puerto 3100 y prueba
+```
+
+Las pruebas extremo a extremo ejecutan el build de producción contra la API
+real de DummyJSON. Los Server Components asíncronos no se pueden probar con
+React Testing Library, por eso su cobertura está en este nivel. El workflow
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) ejecuta lint, tipos,
+pruebas y build, y después las pruebas extremo a extremo.
+
+## Rendimiento
+
+Medido sobre el sitio desplegado (página de inicio, 5 de octubre de 2026):
+
+| Herramienta                                   | Rendimiento | Accesibilidad | Buenas prácticas | SEO |
+| --------------------------------------------- | ----------- | ------------- | ---------------- | --- |
+| Lighthouse (Chrome DevTools, escritorio)      | 100         | 96            | 100              | 100 |
+| PageSpeed Insights (móvil)                    | 95          | 96            | 100              | 100 |
+
+En móvil, el primer contenido pintado (FCP) tarda 0,9 s y el contenido más
+grande (LCP), 2,9 s, que cae en el rango «por mejorar» (2,5–4 s) y es el punto
+a trabajar. PageSpeed Insights no tiene todavía datos de usuarios reales del
+sitio. Para repetir la medición: abrir el sitio, Lighthouse en DevTools, o
+pegar la URL en <https://pagespeed.web.dev>.
+
+Lo que sostiene estas cifras: Server Components (HTML con el contenido ya
+incluido), `next/image` con `sizes` y `priority` solo en lo visible, contenedores
+con proporción fija para evitar saltos de diseño, caché con tags y
+`revalidate`, y poco JavaScript de cliente.
 
 ## Arquitectura
 
@@ -149,6 +211,8 @@ src/
     stores/cart/        Estado global del carrito (Zustand)
     providers/          Tema, React Query, categorías, hidratación del carrito
     config/ constants/ hooks/ types/ utils/
+e2e/                    Pruebas extremo a extremo (Playwright)
+.github/workflows/      Integración continua
 docs/
   architecture.md       Decisiones técnicas con más detalle
 ```
@@ -213,6 +277,9 @@ de utilidades `typo-*`.
   deshabilitado; queda fuera del alcance del reto.
 - **Textos de la API.** Los nombres de categorías y los datos de envío,
   garantía y devoluciones vienen en inglés y se muestran tal cual.
+- **Pruebas extremo a extremo y red.** Dependen de la disponibilidad de
+  DummyJSON, porque el servidor consulta la API real y no se puede interceptar
+  desde el navegador. Por eso son pocas y centradas en los flujos críticos.
 - **Datos de ejemplo.** DummyJSON es una API de pruebas: algunos valores (por
   ejemplo, el pedido mínimo de ciertos productos) no son realistas.
 - **Descuento.** La tarjeta y el detalle muestran el precio de la API como
@@ -232,17 +299,18 @@ de utilidades `typo-*`.
 | Datos estructurados JSON-LD de producto                    | Hecho  |
 | «Agregar al carrito» con estado global y contador en header | Hecho |
 | Justificación de la estrategia de estado del carrito       | Hecho (ver [Decisiones técnicas](#decisiones-técnicas)) |
-| Optimización de imágenes y lazy loading                    | En curso: `next/image` con `sizes` y `priority` en lo visible; falta medir con Lighthouse |
+| Optimización de imágenes, lazy loading y métricas          | Hecho: `next/image` con `sizes` y `priority`; medido en producción (ver [Rendimiento](#rendimiento)), con el LCP móvil en 2,9 s por mejorar |
 | Streaming con Suspense y skeletons                         | Pendiente |
-| Manejo de errores (`error.tsx`), 404 y estados vacíos      | Errores, 404 y carrito vacío hechos; falta el estado vacío del listado |
+| Manejo de errores (`error.tsx`), 404 y estados vacíos      | Hecho: errores, 404, carrito vacío y listado sin resultados |
 | Caché y revalidación                                       | Hecho (tags y `revalidate`); la invalidación a demanda no está implementada |
-| Pruebas unitarias o de integración                         | Pendiente |
+| Pruebas unitarias o de integración                         | Hecho (Vitest y React Testing Library) y extremo a extremo (Playwright) |
+| Integración continua                                       | Hecho (GitHub Actions: lint, tipos, pruebas y build) |
 | README con instrucciones de ejecución                      | Hecho  |
 | Repositorio público                                        | [Hecho](https://github.com/FernandoLBA/flba-next-commerce) |
+| Publicado en un servidor                                   | [Hecho](https://flba-next-commerce.vercel.app) (Vercel) |
 
-Próximos pasos, por orden: pruebas (Vitest sobre
-el store y las utilidades, Playwright sobre el flujo de compra); skeletons y
-estados vacíos; medición de rendimiento.
+Próximos pasos, por orden: skeletons con streaming; mejorar el LCP móvil y la
+accesibilidad (96).
 
 ## Autor
 
