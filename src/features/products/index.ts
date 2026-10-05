@@ -15,5 +15,9 @@ export type {
   ProductSortBy,
   SortOrder,
 } from "./types/product.types";
+export {
+  buildProductsHref,
+  parseProductFilters,
+} from "./utils/product-filters";
 export { ProductDetailView } from "./views/product-detail-view";
 export { ProductsFeatureView } from "./views/products-feature-view";

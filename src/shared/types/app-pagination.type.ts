@@ -4,4 +4,5 @@ export type AppPagination<TKey extends string, TItem> = Record<
 > & {
   totalPages: number;
   page: number;
+  totalItems: number;
 };

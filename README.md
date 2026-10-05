@@ -9,10 +9,10 @@ SEO y una arquitectura que escale con varios desarrolladores. Es la solución al
   reúne la presentación, el video explicativo y este mismo README.
 
 > **Estado:** en desarrollo, con el flujo principal completo: catálogo con
-> paginación y filtro por categoría, detalle de producto con metadata
-> dinámica, carrito con estado global y contador en el header, modo
-> claro/oscuro y pantallas de error. Faltan la búsqueda y el ordenamiento, las
-> pruebas automatizadas y el streaming con skeletons. El detalle está en
+> paginación, filtro por categoría, búsqueda y ordenamiento, detalle de
+> producto con metadata dinámica, carrito con estado global y contador en el
+> header, modo claro/oscuro y pantallas de error. Faltan las pruebas
+> automatizadas (en curso) y el streaming con skeletons. El detalle está en
 > [Estado frente al reto](#estado-frente-al-reto).
 
 ## Contenido
@@ -35,6 +35,12 @@ SEO y una arquitectura que escale con varios desarrolladores. Es la solución al
 - **Filtro por categoría y paginación en la URL** (`?category=beauty&page=2`):
   enlaces reales, compartibles y rastreables por buscadores. Una página fuera
   de rango o una categoría inexistente muestran la página 404.
+- **Búsqueda y ordenamiento** (`?q=phone&sortBy=price&order=asc`): búsqueda
+  por texto y orden por precio, valoración o nombre, combinables con la
+  categoría y la paginación. Todo vive en la URL y se valida en el servidor
+  (lo que no se reconoce se descarta). Las vistas con búsqueda u orden llevan
+  `noindex` y apuntan al listado sin ellas como canónica, para no duplicar
+  contenido. Una búsqueda sin resultados muestra un estado vacío con salida.
 - **Detalle de producto** (`/products/[id]`) con galería, precio, descuento,
   disponibilidad, ficha técnica y reseñas.
 - **SEO en el detalle:** título, descripción, Open Graph, Twitter Card, URL
@@ -220,7 +226,7 @@ de utilidades `typo-*`.
 | Listado renderizado en servidor (Server Components)        | Hecho  |
 | Filtro por categorías en la URL, compartible e indexable   | Hecho  |
 | Paginación en la URL                                       | Hecho  |
-| Búsqueda por texto u ordenamiento                          | Pendiente |
+| Búsqueda por texto u ordenamiento                          | Hecho (ambos, en la URL y combinables con la categoría) |
 | Ruta dinámica `/products/[id]`                             | Hecho  |
 | Metadata dinámica (título, descripción, Open Graph)        | Hecho  |
 | Datos estructurados JSON-LD de producto                    | Hecho  |
@@ -234,7 +240,7 @@ de utilidades `typo-*`.
 | README con instrucciones de ejecución                      | Hecho  |
 | Repositorio público                                        | [Hecho](https://github.com/FernandoLBA/flba-next-commerce) |
 
-Próximos pasos, por orden: búsqueda y orden en la URL; pruebas (Vitest sobre
+Próximos pasos, por orden: pruebas (Vitest sobre
 el store y las utilidades, Playwright sobre el flujo de compra); skeletons y
 estados vacíos; medición de rendimiento.
 

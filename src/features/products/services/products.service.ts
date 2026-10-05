@@ -15,32 +15,64 @@ const LIST_FIELDS =
   "id,title,category,brand,price,discountPercentage,stock,rating,thumbnail";
 
 /**
- * Trae todos los productos filtrados por categoría y paginados
+ * Trae los productos filtrados por categoría y/o búsqueda, ordenados y paginados.
+ *
+ * La API no combina búsqueda con categoría, así que en ese caso se piden todas
+ * las coincidencias (`limit=0`), se filtran por categoría y se pagina aquí.
  * @param filters
  * @returns
  */
 export const getProducts = async (filters?: ProductFilters) => {
   const limit = filters?.limit ?? appSettings.PRODUCTS_LIMIT;
   const page = filters?.page ?? 1;
-  const apiUrl = filters?.category
-    ? productsRoutes.CATEGORIES.byCategorySlug(filters.category)
-    : productsRoutes.PRODUCTS.BASE;
+  const skip = (page - 1) * limit;
+  const sort = filters?.sortBy
+    ? { sortBy: filters.sortBy, order: filters.order ?? "asc" }
+    : {};
+  const next = {
+    tags: [productsCache.tags.products],
+    revalidate: productsCache.revalidate.list,
+  };
+
+  if (filters?.q && filters.category) {
+    const matches = await api.get<PaginatedResponse<"products", Product>>(
+      productsRoutes.PRODUCTS.SEARCH,
+      {
+        params: { q: filters.q, limit: 0, select: LIST_FIELDS, ...sort },
+        next,
+      },
+    );
+    const inCategory = matches.products.filter(
+      (product) => product.category === filters.category,
+    );
+
+    return {
+      products: inCategory.slice(skip, skip + limit),
+      totalItems: inCategory.length,
+      ...toPagination({ total: inCategory.length, skip, limit }),
+    };
+  }
+
+  const apiUrl = filters?.q
+    ? productsRoutes.PRODUCTS.SEARCH
+    : filters?.category
+      ? productsRoutes.CATEGORIES.byCategorySlug(filters.category)
+      : productsRoutes.PRODUCTS.BASE;
 
   const res = await api.get<PaginatedResponse<"products", Product>>(apiUrl, {
     params: {
-      ...filters,
+      ...(filters?.q ? { q: filters.q } : {}),
       limit,
-      skip: (page - 1) * limit,
+      skip,
       select: LIST_FIELDS,
+      ...sort,
     },
-    next: {
-      tags: [productsCache.tags.products],
-      revalidate: productsCache.revalidate.list,
-    },
+    next,
   });
 
   return {
     products: res.products,
+    totalItems: res.total,
     ...toPagination({ total: res.total, skip: res.skip, limit }),
   };
 };

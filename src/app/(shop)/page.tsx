@@ -11,7 +11,6 @@ import { appRoutes } from "@/shared/constants/app.routes";
 import { appSettings } from "@/shared/constants/app.settings";
 import { Metadata } from "next";
 import Image from "next/image";
-import ProductListingPage from "./products/page";
 
 export const generateMetadata = async (): Promise<Metadata> => {
   return {
@@ -19,10 +18,8 @@ export const generateMetadata = async (): Promise<Metadata> => {
   };
 };
 
-export default async function Home(props: ProductListingPage) {
-  const filters = await props.searchParams;
-  const page = Number(filters.page) > 0 ? Number(filters.page) : 1;
-  const res = await getProducts({ ...filters, page });
+export default async function Home() {
+  const res = await getProducts();
   const categories = await getCategories();
 
   return (
