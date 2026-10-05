@@ -2,7 +2,7 @@
 
 import { AppButton } from "@/shared/components/ui";
 import { appMessages } from "@/shared/constants/app.messages";
-import { useCartStore } from "@/shared/stores/cart.store";
+import { useCartStore } from "@/shared/stores/cart/cart.store";
 import type { CartItemInput } from "@/shared/types/cart.type";
 import { useEffect, useState } from "react";
 

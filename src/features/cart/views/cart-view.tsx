@@ -3,9 +3,9 @@
 import { AppButton, AppLink, StatusMessage } from "@/shared/components/ui";
 import { appMessages } from "@/shared/constants/app.messages";
 import { appRoutes } from "@/shared/constants/app.routes";
-import { selectCount, selectSubtotal } from "@/shared/stores/cart.selectors";
-import { useCartStore } from "@/shared/stores/cart.store";
-import { useCartHydrated } from "@/shared/stores/use-cart-count";
+import { selectCount, selectSubtotal } from "@/shared/stores/cart/cart.selectors";
+import { useCartStore } from "@/shared/stores/cart/cart.store";
+import { useCartHydrated } from "@/shared/stores/cart/use-cart-count";
 import { formatPrice } from "@/shared/utils/format-price";
 import { ShoppingCart } from "lucide-react";
 import { CartItemRow } from "../components/cart-item-row/cart-item-row";

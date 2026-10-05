@@ -1,6 +1,6 @@
 "use client";
 
-import { useCartStore } from "@/shared/stores/cart.store";
+import { useCartStore } from "@/shared/stores/cart/cart.store";
 import { useEffect } from "react";
 
 export const CartHydrator = () => {

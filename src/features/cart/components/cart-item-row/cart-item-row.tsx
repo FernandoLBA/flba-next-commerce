@@ -3,7 +3,7 @@
 import { AppButton, AppLink } from "@/shared/components/ui";
 import { appMessages } from "@/shared/constants/app.messages";
 import { appRoutes } from "@/shared/constants/app.routes";
-import { useCartStore } from "@/shared/stores/cart.store";
+import { useCartStore } from "@/shared/stores/cart/cart.store";
 import type { CartItem } from "@/shared/types/cart.type";
 import { formatPrice } from "@/shared/utils/format-price";
 import { Minus, Plus, Trash2 } from "lucide-react";

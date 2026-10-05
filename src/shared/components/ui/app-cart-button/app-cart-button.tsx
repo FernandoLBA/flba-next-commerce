@@ -1,7 +1,7 @@
 "use client";
 
 import { appRoutes } from "@/shared/constants/app.routes";
-import { useCartCount } from "@/shared/stores/use-cart-count";
+import { useCartCount } from "@/shared/stores/cart/use-cart-count";
 import { cn } from "@/shared/utils/cn";
 import { ShoppingCart } from "lucide-react";
 import { ComponentProps } from "react";
