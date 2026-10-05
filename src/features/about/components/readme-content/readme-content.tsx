@@ -12,15 +12,14 @@ import remarkGfm from "remark-gfm";
 const README_PATH = path.join(process.cwd(), "README.md");
 const BLOB_URL = `${appSettings.REPO_URL}/blob/main/`;
 
-// Los enlaces relativos del README (docs/...) apuntan al archivo en GitHub.
 const resolveHref = (href = "") =>
   /^(https?:|mailto:|#)/.test(href)
     ? href
     : `${BLOB_URL}${href.replace(/^\.?\//, "")}`;
 
 const components: Components = {
-  // La página ya tiene su propio h1.
   h1: ({ children }) => <h2>{children}</h2>,
+  
   a: ({ href, children }) => {
     const resolved = resolveHref(href);
     const isAnchor = resolved.startsWith("#");

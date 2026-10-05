@@ -16,7 +16,6 @@ type ProductDetailsPageProps = {
   params: Promise<{ id: string }>;
 };
 
-// Una sola lectura por petición (la comparten generateMetadata y la página).
 const getProductByIdOrNotFound = cache(async (id: string) => {
   if (!/^\d+$/.test(id)) notFound();
 
@@ -70,6 +69,7 @@ const ProductDetailsPage = async (props: {
 }) => {
   const { id } = await props.params;
   const product = await getProductByIdOrNotFound(id);
+  
   const url = new URL(
     appRoutes.PRODUCTS.byId(String(product.id)),
     serverEnvs.APP_SERVER_URL,

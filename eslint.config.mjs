@@ -2,7 +2,6 @@ import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 import { defineConfig, globalIgnores } from "eslint/config";
 
-// Reglas de arquitectura: ver docs/architecture.md
 const noApp = {
   group: ["@/app/**"],
   message: "Nada fuera de app/ puede importar de app/.",
@@ -47,9 +46,7 @@ const eslintConfig = defineConfig([
     files: ["src/app/**/*.{ts,tsx}"],
     rules: restrict(noFeatureInternals),
   },
-  // Override default ignores of eslint-config-next.
   globalIgnores([
-    // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
     "build/**",

@@ -7,6 +7,7 @@ describe("toPagination", () => {
       page: 1,
       totalPages: 10,
     });
+
     expect(toPagination({ total: 194, skip: 80, limit: 20 })).toEqual({
       page: 5,
       totalPages: 10,
@@ -20,8 +21,6 @@ describe("toPagination", () => {
     });
   });
 
-  // Regresión: la API devuelve en `limit` los elementos que trajo (4 en la última
-  // página), no el pedido. Usar ese valor disparaba totalPages a 49.
   it("usa el límite pedido y no el que devuelve la API en la última página", () => {
     expect(toPagination({ total: 194, skip: 190, limit: 20 })).toEqual({
       page: 10,

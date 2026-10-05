@@ -11,7 +11,6 @@ type RawSearchParams = Record<string, string | string[] | undefined>;
 const text = appMessages.PRODUCTS;
 const MAX_QUERY_LENGTH = 80;
 
-/** Las únicas formas de ordenar que ofrece la interfaz. Todo lo demás se ignora. */
 export const PRODUCT_SORT_OPTIONS = [
   { value: "", label: text.SORT_DEFAULT },
   { value: "price:asc", label: text.SORT_PRICE_ASC },
@@ -38,15 +37,13 @@ export const parseSortOption = (value: string): SortSelection => {
   };
 };
 
-/**
- * Convierte los `searchParams` de la URL (siempre texto, y a veces listas) en
- * filtros válidos. Es la frontera de confianza: lo que no se reconoce se descarta.
- */
-export const parseProductFilters = (params: RawSearchParams): ProductFilters => {
+export const parseProductFilters = (
+  params: RawSearchParams,
+): ProductFilters => {
   const category = firstValue(params.category)?.trim();
   const q = firstValue(params.q)?.trim().slice(0, MAX_QUERY_LENGTH);
   const page = Number(firstValue(params.page));
-  // parseSortOption descarta lo que no sea una de las opciones de la interfaz.
+
   const sort = parseSortOption(
     `${firstValue(params.sortBy)}:${firstValue(params.order)}`,
   );
@@ -64,10 +61,12 @@ export const buildProductsHref = (filters: ProductFilters = {}) => {
 
   if (filters.category) params.set("category", filters.category);
   if (filters.q) params.set("q", filters.q);
+
   if (filters.sortBy && filters.order) {
     params.set("sortBy", filters.sortBy);
     params.set("order", filters.order);
   }
+
   if (filters.page && filters.page > 1) {
     params.set("page", String(filters.page));
   }

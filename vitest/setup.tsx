@@ -8,7 +8,6 @@ afterEach(() => {
   localStorage.clear();
 });
 
-/* eslint-disable @typescript-eslint/no-unused-vars -- se descartan props que no son del <img> */
 vi.mock("next/image", () => ({
   default: ({
     src,
@@ -21,14 +20,14 @@ vi.mock("next/image", () => ({
     fill?: boolean;
     priority?: boolean;
   }) => (
-    // eslint-disable-next-line @next/next/no-img-element
     <img src={typeof src === "string" ? src : ""} alt={alt ?? ""} {...props} />
   ),
 }));
 
-/* eslint-enable @typescript-eslint/no-unused-vars */
 vi.mock("next/navigation", () => ({
   usePathname: vi.fn(() => "/"),
+
   useSearchParams: vi.fn(() => new URLSearchParams()),
+  
   useRouter: vi.fn(() => ({ push: vi.fn(), replace: vi.fn() })),
 }));

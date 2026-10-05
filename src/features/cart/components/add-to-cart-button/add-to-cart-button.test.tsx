@@ -20,7 +20,9 @@ describe("AddToCartButton", () => {
 
     await user.click(screen.getByRole("button", { name: "Agregar al carro" }));
 
-    expect(useCartStore.getState().items).toEqual([{ ...mascara, quantity: 1 }]);
+    expect(useCartStore.getState().items).toEqual([
+      { ...mascara, quantity: 1 },
+    ]);
   });
 
   it("suma otra unidad si se pulsa de nuevo", async () => {
@@ -34,17 +36,21 @@ describe("AddToCartButton", () => {
   });
 
   it("confirma con «Agregado» y vuelve al texto original", () => {
-    // userEvent espera con temporizadores propios y se bloquea con los simulados.
     vi.useFakeTimers();
     render(<AddToCartButton item={mascara} />);
 
     fireEvent.click(screen.getByRole("button"));
-    expect(screen.getByRole("button", { name: "Agregado" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Agregado" }),
+    ).toBeInTheDocument();
 
     act(() => {
       vi.advanceTimersByTime(1500);
     });
-    expect(screen.getByRole("button", { name: "Agregar al carro" })).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("button", { name: "Agregar al carro" }),
+    ).toBeInTheDocument();
   });
 
   it("queda desactivado y no agrega sin stock", async () => {

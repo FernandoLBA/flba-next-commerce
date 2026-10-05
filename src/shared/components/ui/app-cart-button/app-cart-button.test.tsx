@@ -17,7 +17,10 @@ describe("AppCartButton", () => {
   it("no muestra el círculo con el carrito vacío", () => {
     render(<AppCartButton />);
 
-    expect(screen.getByRole("link", { name: "Carrito, 0 artículos" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Carrito, 0 artículos" }),
+    ).toBeInTheDocument();
+
     expect(screen.queryByText("0")).not.toBeInTheDocument();
   });
 
@@ -26,9 +29,13 @@ describe("AppCartButton", () => {
       { item: mascara, quantity: 2 },
       { item: perfume, quantity: 3 },
     ]);
+
     render(<AppCartButton />);
 
-    expect(screen.getByRole("link", { name: "Carrito, 5 artículos" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Carrito, 5 artículos" }),
+    ).toBeInTheDocument();
+
     expect(screen.getByText("5")).toBeInTheDocument();
   });
 
@@ -36,18 +43,19 @@ describe("AppCartButton", () => {
     await seedCart([{ item: mascara, quantity: 1 }]);
     render(<AppCartButton />);
 
-    expect(screen.getByRole("link", { name: "Carrito, 1 artículo" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Carrito, 1 artículo" }),
+    ).toBeInTheDocument();
   });
 
   it("muestra 99+ cuando se pasa de 99", async () => {
     await seedCart([{ item: { ...mascara, stock: 500 }, quantity: 120 }]);
+
     render(<AppCartButton />);
 
     expect(screen.getByText("99+")).toBeInTheDocument();
   });
 
-  // El contador no debe pintarse hasta leer localStorage: evita diferencias de
-  // hidratación entre servidor y cliente.
   it("muestra 0 mientras el carrito no se ha hidratado", async () => {
     vi.resetModules();
     const { useCartStore } = await import("@/shared/stores/cart/cart.store");
@@ -57,6 +65,9 @@ describe("AppCartButton", () => {
     render(<Fresh />);
 
     expect(useCartStore.persist.hasHydrated()).toBe(false);
-    expect(screen.getByRole("link", { name: "Carrito, 0 artículos" })).toBeInTheDocument();
+    
+    expect(
+      screen.getByRole("link", { name: "Carrito, 0 artículos" }),
+    ).toBeInTheDocument();
   });
 });

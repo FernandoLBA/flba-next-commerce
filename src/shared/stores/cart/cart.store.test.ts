@@ -10,7 +10,13 @@ const mascara: CartItemInput = {
   thumbnail: "https://cdn.dummyjson.com/m.webp",
   stock: 5,
 };
-const perfume: CartItemInput = { ...mascara, id: 2, title: "Perfume", price: 19.99 };
+
+const perfume: CartItemInput = {
+  ...mascara,
+  id: 2,
+  title: "Perfume",
+  price: 19.99,
+};
 
 const state = () => useCartStore.getState();
 
@@ -107,7 +113,6 @@ describe("cart store", () => {
     });
 
     it("calculan el subtotal en céntimos, sin errores de decimales", () => {
-      // 19.99 * 3 en coma flotante da 59.96999999999999
       state().add(perfume, 3);
 
       expect(selectSubtotal(state())).toBe(59.97);
@@ -138,6 +143,7 @@ describe("cart store", () => {
           version: 1,
         }),
       );
+
       expect(state().items).toEqual([]);
 
       await useCartStore.persist.rehydrate();

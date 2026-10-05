@@ -16,8 +16,13 @@ describe("CartView", () => {
     it("muestra el estado vacío con un enlace a los productos", () => {
       render(<CartView />);
 
-      expect(screen.getByRole("heading", { name: "Tu carrito está vacío" })).toBeInTheDocument();
-      expect(screen.getByRole("link", { name: "Ver productos" })).toHaveAttribute("href", "/products");
+      expect(
+        screen.getByRole("heading", { name: "Tu carrito está vacío" }),
+      ).toBeInTheDocument();
+      
+      expect(
+        screen.getByRole("link", { name: "Ver productos" }),
+      ).toHaveAttribute("href", "/products");
     });
   });
 
@@ -34,7 +39,6 @@ describe("CartView", () => {
 
       expect(screen.getAllByRole("listitem")).toHaveLength(2);
       expect(screen.getByText("5 artículos")).toBeInTheDocument();
-      // 9.99 * 2 + 19.99 * 3 = 79.95
       expect(screen.getByText("S/ 79.95")).toBeInTheDocument();
     });
 
@@ -50,10 +54,16 @@ describe("CartView", () => {
       render(<CartView />);
       const row = screen.getAllByRole("listitem")[0];
 
-      await user.click(within(row).getByRole("button", { name: "Aumentar cantidad" }));
+      await user.click(
+        within(row).getByRole("button", { name: "Aumentar cantidad" }),
+      );
+
       expect(items()[0].quantity).toBe(3);
 
-      await user.click(within(row).getByRole("button", { name: "Disminuir cantidad" }));
+      await user.click(
+        within(row).getByRole("button", { name: "Disminuir cantidad" }),
+      );
+
       expect(items()[0].quantity).toBe(2);
     });
 
@@ -62,11 +72,17 @@ describe("CartView", () => {
         { item: { ...mascara, stock: 2 }, quantity: 2 },
         { item: perfume, quantity: 1 },
       ]);
+
       render(<CartView />);
       const [full, single] = screen.getAllByRole("listitem");
 
-      expect(within(full).getByRole("button", { name: "Aumentar cantidad" })).toBeDisabled();
-      expect(within(single).getByRole("button", { name: "Disminuir cantidad" })).toBeDisabled();
+      expect(
+        within(full).getByRole("button", { name: "Aumentar cantidad" }),
+      ).toBeDisabled();
+
+      expect(
+        within(single).getByRole("button", { name: "Disminuir cantidad" }),
+      ).toBeDisabled();
     });
 
     it("quita un producto", async () => {
@@ -86,13 +102,18 @@ describe("CartView", () => {
       await user.click(screen.getByRole("button", { name: "Vaciar carrito" }));
 
       expect(items()).toEqual([]);
-      expect(screen.getByRole("heading", { name: "Tu carrito está vacío" })).toBeInTheDocument();
+
+      expect(
+        screen.getByRole("heading", { name: "Tu carrito está vacío" }),
+      ).toBeInTheDocument();
     });
 
     it("deja el pago deshabilitado (fuera del alcance del reto)", () => {
       render(<CartView />);
 
-      expect(screen.getByRole("button", { name: "Proceder al pago" })).toBeDisabled();
+      expect(
+        screen.getByRole("button", { name: "Proceder al pago" }),
+      ).toBeDisabled();
     });
   });
 });

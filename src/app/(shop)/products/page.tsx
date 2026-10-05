@@ -23,7 +23,6 @@ export const generateMetadata = async ({
     title: q
       ? `${appMessages.PRODUCTS.SEARCH_TITLE} «${q}»`
       : appMessages.PRODUCTS.TITLE,
-    // La búsqueda y el orden repiten contenido: apuntan a la versión sin ellos.
     alternates: { canonical: buildProductsHref({ category, page }) },
     robots: q || sortBy ? { index: false, follow: true } : undefined,
   };
@@ -33,6 +32,7 @@ const ProductListingPage = async ({
   searchParams,
 }: ProductListingPageProps) => {
   const filters = parseProductFilters(await searchParams);
+
   const [res, categories] = await Promise.all([
     getProducts(filters),
     getCategories().catch((): ProductCategory[] => []),

@@ -1,6 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// Puerto propio para no chocar con `pnpm dev` (3000).
 const PORT = 3100;
 
 export default defineConfig({
@@ -16,7 +15,6 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
-  // Se prueba el build de producción, que es lo que se publica.
   webServer: {
     command: `pnpm build && pnpm start --port ${PORT}`,
     url: `http://localhost:${PORT}`,
