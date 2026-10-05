@@ -1,4 +1,7 @@
+"use client";
+
 import { appRoutes } from "@/shared/constants/app.routes";
+import { useCartCount } from "@/shared/stores/use-cart-count";
 import { cn } from "@/shared/utils/cn";
 import { ShoppingCart } from "lucide-react";
 import { ComponentProps } from "react";
@@ -9,14 +12,26 @@ export const AppCartButton = ({
   className,
   ...props
 }: ComponentProps<"a">) => {
+  const count = useCartCount();
+
   return (
     <AppLink
-      className={cn("", className)}
       href={appRoutes.CART.BASE}
+      aria-label={`Carrito, ${count} articulos`}
+      className={cn("relative", className)}
       onClick={onClick}
       {...props}
     >
       <ShoppingCart />
+
+      {count > 0 && (
+        <span
+          aria-hidden
+          className="flex-center absolute -right-2 -top-2 h-5 min-w-5 rounded-full bg-destructive px-1 typo-caption font-bold text-destructive-foreground"
+        >
+          {count > 99 ? "99+" : count}
+        </span>
+      )}
     </AppLink>
   );
 };

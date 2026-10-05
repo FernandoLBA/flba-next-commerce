@@ -1,5 +1,11 @@
-const CategoriesPage = () => {
-  return <>Cart</>;
+import { CartView } from "@/features/cart";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Carrito",
+  robots: { index: false },
 };
 
-export default CategoriesPage;
+export default function CartPage() {
+  return <CartView />;
+}

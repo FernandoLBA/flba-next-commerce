@@ -1,8 +1,8 @@
+import { AddToCartButton } from "@/features/cart";
 import { AppBadge } from "@/shared/components/ui";
 import { appMessages } from "@/shared/constants/app.messages";
 import { addPercentage } from "@/shared/utils/percentage";
 import { appSettings } from "../../../shared/constants/app.settings";
-import { AddToCartButton } from "../components/add-to-cart-button/add-to-cart-button";
 import { ProductGallery } from "../components/product-gallery/product-gallery";
 import { ProductReviews } from "../components/product-reviews/product-reviews";
 import { ProductStars } from "../components/product-stars/product-stars";
@@ -73,7 +73,16 @@ export const ProductDetailView = ({ product }: { product: Product }) => {
           {/* DESCRIPCIÓN */}
           <p className="typo-body">{product.description}</p>
 
-          <AddToCartButton disabled={outOfStock} />
+          {/* AGREGAR AL CARRITO */}
+          <AddToCartButton
+            item={{
+              id: product.id,
+              title: product.title,
+              price: product.price,
+              thumbnail: product.thumbnail,
+              stock: product.stock,
+            }}
+          />
 
           {/* ENVÍO Y GARANTIA */}
           {details.length > 0 && (

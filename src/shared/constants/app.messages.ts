@@ -37,7 +37,20 @@ export const appMessages = {
   HOME: {
     BANNER_ALT: "Ver todos los productos",
   },
+  CART: {
+    TITLE: "Carrito",
+    SUMMARY: "Resumen",
+    EMPTY_TITLE: "Tu carrito está vacío",
+    EMPTY_DESCRIPTION: "Agrega productos para verlos aquí.",
+    EMPTY_ACTION: "Ver productos",
+    QUANTITY: "Cantidad",
+    DECREASE: "Disminuir cantidad",
+    INCREASE: "Aumentar cantidad",
+    REMOVE: "Quitar",
+    CHECKOUT: "Proceder al pago",
+    CLEAR: "Vaciar carrito",
+  },
   COMMON: {
     NO_BRAND: "Genérico",
-  }
+  },
 };

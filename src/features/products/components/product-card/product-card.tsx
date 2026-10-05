@@ -1,6 +1,6 @@
+import { AddToCartButton } from "@/features/cart";
 import {
   AppBadge,
-  AppButton,
   AppLink,
   Card,
   CardContent,
@@ -75,9 +75,12 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           </div>
         </div>
 
-        <AppButton type="button" className="w-full rounded-none">
-          Agregar al carro
-        </AppButton>
+        <AddToCartButton
+          className="w-full"
+          item={{
+            ...product,
+          }}
+        />
       </CardFooter>
     </Card>
   );

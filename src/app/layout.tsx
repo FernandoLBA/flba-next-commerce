@@ -1,5 +1,6 @@
 import { serverEnvs } from "@/shared/config/envs.server";
 import { appSettings } from "@/shared/constants/app.settings";
+import { CartHydrator } from "@/shared/providers/cart-hydrator";
 import { QueryProvider } from "@/shared/providers/query-provider";
 import { ThemeProvider } from "@/shared/providers/theme-provider";
 import type { Metadata } from "next";
@@ -35,6 +36,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
+        <CartHydrator />
+
         <ThemeProvider>
           <QueryProvider>{children}</QueryProvider>
         </ThemeProvider>

@@ -20,11 +20,12 @@
   --primary-text: #4d7c0f;
   --secondary: #f0eeee; /* fondo suave, un tono sobre --background */
   --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-
+  
   --background: #282828;
   --foreground: #ededed;
   --muted: #9ca3af;
@@ -32,6 +33,7 @@
   --secondary: #333333;
   --primary-text: #80be29;
   --destructive: #f87171;
+  --destructive-foreground: #111827;
 }
 
 /* 
@@ -52,6 +54,7 @@
   --color-secondary: var(--secondary);
 
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
