@@ -25,9 +25,10 @@ export const appMessages = {
     VIDEO_TITLE: "Video explicativo",
     VIDEO_IFRAME_TITLE: "Video explicativo del challenge en YouTube",
     VIDEO_SOON: "El video estará disponible pronto.",
-    REPO_TITLE: "Código fuente",
-    REPO_DESCRIPTION: "El proyecto es público en GitHub.",
+    REPO_TITLE: "Código y sitio en línea",
+    REPO_DESCRIPTION: "El código es público en GitHub y el sitio está desplegado en Vercel.",
     REPO_CTA: "Ver repositorio",
+    DEMO_CTA: "Ver sitio en línea",
     README_TITLE: "README del proyecto",
     README_ERROR: "No se pudo cargar el README. Puedes verlo en el repositorio.",
   },
@@ -51,6 +52,11 @@ export const appMessages = {
   },
   HOME: {
     BANNER_ALT: "Ver todos los productos",
+  },
+  PAGINATION: {
+    LABEL: "Paginación",
+    PREVIOUS: "Página anterior",
+    NEXT: "Página siguiente",
   },
   CART: {
     TITLE: "Carrito",

@@ -1,5 +1,6 @@
 "use client";
 
+import { appMessages } from "@/shared/constants/app.messages";
 import { cn } from "@/shared/utils/cn";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -25,9 +26,13 @@ export const Pagination = ({ page, totalPages }: PaginationProps) => {
   };
 
   return (
-    <div className={styles.root}>
+    <nav aria-label={appMessages.PAGINATION.LABEL} className={styles.root}>
       {parsedPage !== 1 && (
-        <Link href={buildHref(parsedPage - 1)} className={styles.arrow}>
+        <Link
+          href={buildHref(parsedPage - 1)}
+          aria-label={appMessages.PAGINATION.PREVIOUS}
+          className={styles.arrow}
+        >
           <ChevronLeft />
         </Link>
       )}
@@ -39,6 +44,7 @@ export const Pagination = ({ page, totalPages }: PaginationProps) => {
           return (
             <Link
               href={buildHref(selectedPage)}
+              aria-current={selectedPage === parsedPage ? "page" : undefined}
               className={cn(
                 styles.page,
                 selectedPage === parsedPage && styles.pageActive,
@@ -54,10 +60,14 @@ export const Pagination = ({ page, totalPages }: PaginationProps) => {
       <div className={styles.mobilePage}>{parsedPage}</div>
 
       {parsedPage < totalPages && (
-        <Link href={buildHref(parsedPage + 1)} className={styles.arrow}>
+        <Link
+          href={buildHref(parsedPage + 1)}
+          aria-label={appMessages.PAGINATION.NEXT}
+          className={styles.arrow}
+        >
           <ChevronRight />
         </Link>
       )}
-    </div>
+    </nav>
   );
 };

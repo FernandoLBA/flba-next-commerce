@@ -17,7 +17,7 @@ export const AppCartButton = ({
   return (
     <AppLink
       href={appRoutes.CART.BASE}
-      aria-label={`Carrito, ${count} articulos`}
+      aria-label={`Carrito, ${count} ${count === 1 ? "artículo" : "artículos"}`}
       className={cn("relative", className)}
       onClick={onClick}
       {...props}
