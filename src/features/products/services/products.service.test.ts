@@ -100,3 +100,112 @@ describe("getCategories", () => {
     expect(categories).toEqual([{ slug: "beauty", name: "Beauty" }]);
   });
 });
+
+describe("getProducts: búsqueda y orden", () => {
+  it("busca en /products/search enviando q", async () => {
+    get.mockResolvedValue(listResponse());
+
+    await getProducts({ q: "phone" });
+
+    const [path, options] = get.mock.calls[0];
+
+    expect(path).toBe("/products/search");
+    expect(options?.params).toMatchObject({ q: "phone", limit: 20, skip: 0 });
+  });
+
+  it("envía el campo y el sentido del orden", async () => {
+    get.mockResolvedValue(listResponse());
+
+    await getProducts({ sortBy: "price", order: "desc" });
+
+    expect(get.mock.calls[0][1]?.params).toMatchObject({
+      sortBy: "price",
+      order: "desc",
+    });
+  });
+
+  it("usa orden ascendente si falta el sentido", async () => {
+    get.mockResolvedValue(listResponse());
+
+    await getProducts({ sortBy: "title" });
+
+    expect(get.mock.calls[0][1]?.params).toMatchObject({ order: "asc" });
+  });
+
+  it("no envía parámetros de orden cuando no se ordena", async () => {
+    get.mockResolvedValue(listResponse());
+
+    await getProducts();
+
+    expect(get.mock.calls[0][1]?.params).not.toHaveProperty("sortBy");
+    expect(get.mock.calls[0][1]?.params).not.toHaveProperty("order");
+  });
+
+  // Enviar page o category a la API no sirve de nada y fragmenta la caché.
+  it("solo envía a la API lo que ella usa", async () => {
+    get.mockResolvedValue(listResponse());
+
+    await getProducts({ category: "beauty", page: 2 });
+
+    const params = get.mock.calls[0][1]?.params ?? {};
+
+    expect(params).not.toHaveProperty("page");
+    expect(params).not.toHaveProperty("category");
+    expect(params).not.toHaveProperty("q");
+  });
+
+  it("devuelve el total de resultados", async () => {
+    get.mockResolvedValue(listResponse({ total: 23 }));
+
+    const result = await getProducts({ q: "phone" });
+
+    expect(result.totalItems).toBe(23);
+  });
+});
+
+describe("getProducts: búsqueda dentro de una categoría", () => {
+  // La API no combina ambas: se piden todas las coincidencias y se filtra aquí.
+  const matches = [
+    ...Array.from({ length: 30 }, (_, i) => ({ id: i + 1, category: "smartphones" })),
+    ...Array.from({ length: 15 }, (_, i) => ({ id: i + 100, category: "mobile-accessories" })),
+  ];
+
+  beforeEach(() => {
+    get.mockResolvedValue(listResponse({ products: matches, total: 45, limit: 45 }));
+  });
+
+  it("pide todas las coincidencias en una sola llamada", async () => {
+    await getProducts({ q: "phone", category: "smartphones" });
+
+    expect(get).toHaveBeenCalledTimes(1);
+    expect(get.mock.calls[0][0]).toBe("/products/search");
+    expect(get.mock.calls[0][1]?.params).toMatchObject({ q: "phone", limit: 0 });
+    expect(String(get.mock.calls[0][1]?.params?.select)).toContain("category");
+  });
+
+  it("deja solo los productos de la categoría y cuenta el total filtrado", async () => {
+    const result = await getProducts({ q: "phone", category: "smartphones" });
+
+    expect(result.totalItems).toBe(30);
+    expect(result.products.every((p) => p.category === "smartphones")).toBe(true);
+  });
+
+  it("pagina el resultado filtrado", async () => {
+    const first = await getProducts({ q: "phone", category: "smartphones", page: 1 });
+    const second = await getProducts({ q: "phone", category: "smartphones", page: 2 });
+
+    expect(first.products).toHaveLength(20);
+    expect(second.products).toHaveLength(10);
+    expect(second.products[0].id).toBe(21);
+    expect(first.totalPages).toBe(2);
+    expect(second.page).toBe(2);
+  });
+
+  it("devuelve una lista vacía si ninguna coincidencia es de la categoría", async () => {
+    const result = await getProducts({ q: "phone", category: "beauty" });
+
+    expect(result.products).toEqual([]);
+    expect(result.totalItems).toBe(0);
+    expect(result.totalPages).toBe(1);
+  });
+});

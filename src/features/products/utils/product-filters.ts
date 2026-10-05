@@ -46,12 +46,10 @@ export const parseProductFilters = (params: RawSearchParams): ProductFilters => 
   const category = firstValue(params.category)?.trim();
   const q = firstValue(params.q)?.trim().slice(0, MAX_QUERY_LENGTH);
   const page = Number(firstValue(params.page));
-  const requested = `${firstValue(params.sortBy)}:${firstValue(params.order)}`;
-  const sort = PRODUCT_SORT_OPTIONS.some(
-    (option) => option.value && option.value === requested,
-  )
-    ? parseSortOption(requested)
-    : {};
+  // parseSortOption descarta lo que no sea una de las opciones de la interfaz.
+  const sort = parseSortOption(
+    `${firstValue(params.sortBy)}:${firstValue(params.order)}`,
+  );
 
   return {
     category: category || undefined,

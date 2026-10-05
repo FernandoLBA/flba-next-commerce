@@ -142,16 +142,16 @@ desconocidas tras añadir una en `globals.css`, reinícialo con
 ## Pruebas
 
 La estrategia prioriza lo que concentra lógica de negocio y los flujos críticos,
-no una cobertura total. Hoy hay 64 pruebas unitarias y de integración y 9 de
+no una cobertura total. Hoy hay 117 pruebas unitarias y de integración y 14 de
 extremo a extremo.
 
 | Nivel | Herramienta | Qué cubre |
 | --- | --- | --- |
-| Lógica pura | Vitest | Paginación (`skip`/`total`/`limit` a páginas, incluida la última), recortes de texto, precios y porcentajes |
+| Lógica pura | Vitest | Paginación (`skip`/`total`/`limit` a páginas, incluida la última), recortes de texto, precios y porcentajes, y los filtros de la URL (validación de `q`, `sortBy`, `order`, `page` y construcción de enlaces) |
 | Estado | Vitest | Store del carrito: sumar al repetir, límite de stock, cantidades, quitar, vaciar, selectores (subtotal en céntimos) y persistencia con rehidratación manual |
-| Servicios | Vitest con `fetch` simulado | Parámetros pedidos a la API, ruta por categoría, tags y `revalidate`, paginación calculada |
-| Componentes | Vitest + React Testing Library | Contador del carrito (no se pinta antes de hidratar, `99+`), botón de agregar, vista del carrito, paginación (enlaces que conservan la categoría), barra de categorías, JSON-LD |
-| Extremo a extremo | Playwright | Compra completa (filtrar por categoría, detalle, agregar, contador, carrito, persistencia tras recargar), 404 en cinco casos, metadata y datos estructurados del detalle |
+| Servicios | Vitest con `fetch` simulado | Parámetros pedidos a la API, ruta por categoría y por búsqueda, orden, búsqueda dentro de una categoría (filtrado y paginación en memoria), tags y `revalidate`, paginación calculada |
+| Componentes | Vitest + React Testing Library | Contador del carrito (no se pinta antes de hidratar, `99+`), botón de agregar, vista del carrito, paginación (enlaces que conservan la categoría), barra de categorías (conserva búsqueda y orden), barra de búsqueda y orden, estado vacío, JSON-LD |
+| Extremo a extremo | Playwright | Compra completa (filtrar por categoría, detalle, agregar, contador, carrito, persistencia tras recargar), búsqueda y orden en la URL (incluida su combinación con la categoría y el estado vacío), 404 en cinco casos, metadata y datos estructurados del detalle, y que la búsqueda no se indexe |
 
 Las pruebas viven junto al archivo que prueban (`cart.store.test.ts`) y las de
 extremo a extremo, en `e2e/`. Dos de ellas son de regresión de fallos reales:

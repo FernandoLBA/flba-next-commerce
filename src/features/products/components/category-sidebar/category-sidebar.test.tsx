@@ -54,3 +54,32 @@ describe("CategorySidebar", () => {
     expect(container).toBeEmptyDOMElement();
   });
 });
+
+describe("CategorySidebar con búsqueda u orden activos", () => {
+  const filters = { q: "phone", sortBy: "price", order: "asc" } as const;
+
+  const renderWithFilters = (activeCategory?: string) =>
+    render(
+      <CategoriesProvider categories={categories}>
+        <CategorySidebar activeCategory={activeCategory} filters={filters} />
+      </CategoriesProvider>,
+    );
+
+  it("conserva la búsqueda y el orden al cambiar de categoría", () => {
+    renderWithFilters();
+
+    expect(screen.getByRole("link", { name: "Beauty" })).toHaveAttribute(
+      "href",
+      "/products?category=beauty&q=phone&sortBy=price&order=asc",
+    );
+  });
+
+  it("«Todos» quita la categoría pero conserva el resto", () => {
+    renderWithFilters("beauty");
+
+    expect(screen.getByRole("link", { name: "Todos" })).toHaveAttribute(
+      "href",
+      "/products?q=phone&sortBy=price&order=asc",
+    );
+  });
+});
