@@ -11,6 +11,9 @@ export const appRoutes = {
   CART: {
     BASE: "/cart",
   },
+  ABOUT: {
+    BASE: "/about",
+  },
   IMAGES: {
     BASE: "/images",
   },

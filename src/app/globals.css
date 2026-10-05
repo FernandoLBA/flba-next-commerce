@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* `dark:` sigue al atributo que escribe next-themes, no solo al sistema operativo */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
@@ -118,6 +119,26 @@
 }
 @utility typo-currency {
   @apply align-super text-xs;
+}
+
+/* Colores del plugin de tipografía (`prose`) tomados de los tokens del tema */
+@utility prose-theme {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-lead: var(--muted);
+  --tw-prose-links: var(--primary-text);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: var(--muted);
+  --tw-prose-bullets: var(--muted);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--foreground);
+  --tw-prose-quote-borders: var(--border);
+  --tw-prose-captions: var(--muted);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-pre-code: var(--foreground);
+  --tw-prose-pre-bg: var(--secondary);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
 }
 
 @utility link-drawer {

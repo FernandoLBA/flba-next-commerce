@@ -33,7 +33,7 @@ export const Footer = () => {
             rel="noopener noreferrer"
             className="underline hover:font-bold"
           >
-            {appSettings.AUTHOR.NAME}
+            {appSettings.AUTHOR.HANDLE}
           </a>
         </p>
       </div>

@@ -11,6 +11,8 @@ import { MobileMenu } from "./mobile-menu/mobile-menu";
 
 export const NavBar = () => {
   const pathname = usePathname();
+  const isActive = (url: string) =>
+    url === appRoutes.HOME.BASE ? pathname === url : pathname.startsWith(url);
 
   return (
     <nav className="w-full border-b fixed bg-black text-primary z-10">
@@ -31,9 +33,8 @@ export const NavBar = () => {
         <div className="hidden md:flex justify-between gap-3">
           {navLinks.map((nl) => (
             <AppLink
-              className={cn(
-                `${pathname.includes(nl.label.toLowerCase()) && "underline"}`,
-              )}
+              className={cn(isActive(nl.url) && "underline")}
+              aria-current={isActive(nl.url) ? "page" : undefined}
               key={nl.label}
               href={nl.url}
             >

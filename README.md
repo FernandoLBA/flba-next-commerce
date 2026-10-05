@@ -4,10 +4,15 @@ E-commerce construido con **Next.js (App Router)**, orientado a rendimiento,
 SEO y una arquitectura que escale con varios desarrolladores. Es la solución al
 [Reto Técnico 2026 — Frontend Senior](docs/Reto%20T%C3%A9cnico%202026.pdf).
 
-> **Estado:** en desarrollo. El catálogo, la paginación por URL, la metadata
-> dinámica del detalle, el modo claro/oscuro y las pantallas de error ya
-> funcionan. Quedan por completar los filtros, la búsqueda, el carrito, la
-> vista del detalle y las pruebas. El detalle está en
+- **Repositorio:** <https://github.com/FernandoLBA/flba-next-commerce>
+- **Presentación del proyecto:** la página `/about` («Sobre este challenge»)
+  reúne la presentación, el video explicativo y este mismo README.
+
+> **Estado:** en desarrollo, con el flujo principal completo: catálogo con
+> paginación y filtro por categoría, detalle de producto con metadata
+> dinámica, carrito con estado global y contador en el header, modo
+> claro/oscuro y pantallas de error. Faltan la búsqueda y el ordenamiento, las
+> pruebas automatizadas y el streaming con skeletons. El detalle está en
 > [Estado frente al reto](#estado-frente-al-reto).
 
 ## Contenido
@@ -19,6 +24,7 @@ SEO y una arquitectura que escale con varios desarrolladores. Es la solución al
 - [Scripts](#scripts)
 - [Arquitectura](#arquitectura)
 - [Decisiones técnicas](#decisiones-técnicas)
+- [Limitaciones conocidas](#limitaciones-conocidas)
 - [Estado frente al reto](#estado-frente-al-reto)
 - [Autor](#autor)
 
@@ -26,32 +32,41 @@ SEO y una arquitectura que escale con varios desarrolladores. Es la solución al
 
 - **Catálogo renderizado en el servidor** con Server Components: el HTML llega
   con los productos ya incluidos.
-- **Paginación en la URL** (`?page=2`): enlaces reales, compartibles y
-  rastreables por buscadores. Una página fuera de rango muestra la página 404.
-- **Metadata dinámica en el detalle** (`/products/[id]`): título, descripción,
-  Open Graph, Twitter Card y URL canónica a partir de los datos del producto.
-- **Caché con tags** en cada llamada a la API, para poder invalidar por
-  recurso.
+- **Filtro por categoría y paginación en la URL** (`?category=beauty&page=2`):
+  enlaces reales, compartibles y rastreables por buscadores. Una página fuera
+  de rango o una categoría inexistente muestran la página 404.
+- **Detalle de producto** (`/products/[id]`) con galería, precio, descuento,
+  disponibilidad, ficha técnica y reseñas.
+- **SEO en el detalle:** título, descripción, Open Graph, Twitter Card, URL
+  canónica y datos estructurados JSON-LD (`Product`), todo a partir de los
+  datos del producto. Un producto inexistente responde con un 404 real.
+- **Carrito de compras** con estado global (Zustand), persistido en el
+  navegador, con selector de cantidad limitado por el stock y un contador en
+  el header.
+- **Caché con tags y revalidación** en cada llamada a la API.
 - **Modo claro y oscuro** con persistencia y seguimiento de la preferencia del
   sistema (`next-themes`).
+- **Navegación móvil** con un drawer accesible (`<dialog>` nativo) que incluye
+  las categorías.
 - **Pantallas de error y 404** personalizadas, con el layout de la tienda.
-- **Sistema de diseño propio**: tokens, componentes con variantes y estilos
-  encapsulados.
+- **Sistema de diseño propio:** tokens de color por tema, escala tipográfica y
+  componentes con variantes y estilos encapsulados.
 - **Límites entre capas verificados por ESLint.**
 
 ## Stack
 
-| Área              | Tecnología                                                  |
-| ----------------- | ----------------------------------------------------------- |
-| Framework         | Next.js 16 (App Router) y React 19                          |
-| Lenguaje          | TypeScript en modo estricto                                 |
-| Estilos           | Tailwind CSS 4 y CSS Modules                                |
-| Datos             | `fetch` con la caché de Next; TanStack Query 5 para el cliente |
-| Validación        | zod 4 (variables de entorno)                                |
-| Tema              | next-themes                                                 |
-| Iconos y utilidades | lucide-react, clsx, tailwind-merge                        |
-| Calidad           | ESLint 9 con reglas de arquitectura                         |
-| Gestor de paquetes | pnpm                                                       |
+| Área                | Tecnología                                                      |
+| ------------------- | --------------------------------------------------------------- |
+| Framework           | Next.js 16 (App Router) y React 19                              |
+| Lenguaje            | TypeScript en modo estricto                                     |
+| Estilos             | Tailwind CSS 4 y CSS Modules                                    |
+| Estado global       | Zustand 5 con `persist` (carrito)                               |
+| Datos               | `fetch` con la caché de Next; TanStack Query 5 configurado para las partes interactivas del cliente |
+| Validación          | zod 4 (variables de entorno)                                    |
+| Tema                | next-themes                                                     |
+| Iconos y utilidades | lucide-react, clsx, tailwind-merge                              |
+| Calidad             | ESLint 9 con reglas de arquitectura                             |
+| Gestor de paquetes  | pnpm                                                            |
 
 ## Primeros pasos
 
@@ -83,9 +98,9 @@ pnpm dev
 Se validan con zod al iniciar. Si falta alguna o no es una URL válida, la
 aplicación falla con un mensaje claro.
 
-| Variable              | Ámbito   | Descripción                                                  | Ejemplo                 |
-| --------------------- | -------- | ------------------------------------------------------------ | ----------------------- |
-| `NEXT_PUBLIC_API_URL` | Cliente  | URL base de la API de productos                              | `https://dummyjson.com` |
+| Variable              | Ámbito   | Descripción                                                   | Ejemplo                 |
+| --------------------- | -------- | ------------------------------------------------------------- | ----------------------- |
+| `NEXT_PUBLIC_API_URL` | Cliente  | URL base de la API de productos                               | `https://dummyjson.com` |
 | `APP_SERVER_URL`      | Servidor | URL pública del sitio; base de las URLs absolutas de metadata | `http://localhost:3000` |
 
 En producción, `APP_SERVER_URL` debe ser el dominio real del sitio. Las
@@ -94,13 +109,17 @@ cambiarlas exige volver a construir.
 
 ## Scripts
 
-| Comando          | Descripción                              |
-| ---------------- | ---------------------------------------- |
-| `pnpm dev`       | Servidor de desarrollo                   |
-| `pnpm build`     | Build de producción                      |
-| `pnpm start`     | Sirve el build de producción             |
-| `pnpm lint`      | ESLint, incluidas las reglas de capas    |
-| `pnpm rem:next`  | Borra la carpeta `.next`                 |
+| Comando         | Descripción                           |
+| --------------- | ------------------------------------- |
+| `pnpm dev`      | Servidor de desarrollo                |
+| `pnpm build`    | Build de producción                   |
+| `pnpm start`    | Sirve el build de producción          |
+| `pnpm lint`     | ESLint, incluidas las reglas de capas |
+| `pnpm rem:next` | Borra la carpeta `.next`              |
+
+Si el servidor de desarrollo muestra errores de utilidades de Tailwind
+desconocidas tras añadir una en `globals.css`, reinícialo con
+`pnpm rem:next` y `pnpm dev`.
 
 ## Arquitectura
 
@@ -113,9 +132,17 @@ app  →  features  →  shared
 ```
 src/
   app/                  Rutas, layouts y metadata (sin lógica de negocio)
-  features/products/    Dominio de productos: componentes, hooks,
-                        servicios, tipos y vistas. Expone un único index.ts
-  shared/               Cliente HTTP, componentes UI, config, utilidades
+  features/
+    products/           Catálogo, detalle, categorías: componentes, servicios,
+                        tipos y vistas
+    cart/               Botón de agregar, filas y vista del carrito
+    about/              Página «Sobre este challenge»
+  shared/
+    api/                Cliente HTTP
+    components/         ui/ (piezas genéricas) y layout/ (header, footer)
+    stores/cart/        Estado global del carrito (Zustand)
+    providers/          Tema, React Query, categorías, hidratación del carrito
+    config/ constants/ hooks/ types/ utils/
 docs/
   architecture.md       Decisiones técnicas con más detalle
 ```
@@ -124,61 +151,92 @@ docs/
 - `shared` nunca importa de `features` ni de `app`.
 - Estas reglas las hace cumplir ESLint: `pnpm lint` falla si se rompen.
 
-La guía completa (estructura, convenciones, servidor y cliente, caché, estilos
-y estado) está en [`docs/architecture.md`](docs/architecture.md).
+La guía completa (estructura, convenciones, servidor y cliente, caché,
+estilos y estado) está en [`docs/architecture.md`](docs/architecture.md).
 
 ## Decisiones técnicas
 
 **Renderizado.** El listado y el detalle son Server Components. Las partes
-interactivas (paginación, tema) son componentes de cliente aislados, para
-enviar poco JavaScript.
+interactivas (paginación, tema, galería, carrito) son componentes de cliente
+aislados, para enviar poco JavaScript.
 
-**Estado en la URL.** La página (y, cuando estén, categoría, búsqueda y orden)
-viven en los `searchParams`. Así cada vista es compartible e indexable, y no
-hay un store duplicando lo que ya dice la URL.
+**Estado en la URL.** La página y la categoría viven en los `searchParams`.
+Así cada vista es compartible e indexable, y no hay un store duplicando lo que
+ya dice la URL.
 
 **API.** Se usa [DummyJSON](https://dummyjson.com). El reto sugería FakeStore
 API, que no estaba disponible durante el desarrollo; DummyJSON ofrece los
 mismos recursos y además búsqueda, orden y paginación. La forma de su
 respuesta (`skip`, `limit`, `total`) está aislada en los servicios, de modo
-que el resto de la aplicación trabaja con `page` y `totalPages` y no depende
-de la API.
+que el resto de la aplicación trabaja con `page` y `totalPages`. Un detalle
+relevante: la API devuelve en `limit` los elementos que trajo, no el límite
+pedido, así que la paginación usa el límite solicitado.
 
 **Caché.** Cada llamada declara tags (`products`, `product-{id}`,
-`categories`); el listado revalida cada 60 s. Los `fetch` de metadata y de la
-página se deduplican con `React.cache`.
+`categories`) y un `revalidate`: el listado, 60 s; el detalle, 5 min; las
+categorías, 24 h. Los `fetch` de metadata y de la página se deduplican con
+`React.cache`. Para el cliente, TanStack Query usa el mismo tiempo como
+`staleTime`.
+
+**Categorías compartidas.** El layout de la tienda las pide una vez (con la
+caché de Next) y las reparte con un Context. Las consumen el sidebar de
+`/products` y el drawer móvil sin pasar props por el header. No se usa un
+store para esto: son datos del servidor, de solo lectura.
+
+**Carrito.** Zustand con `persist` en `localStorage`. Es estado propio de cada
+usuario y cambia con cada clic, así que no cabe en la caché de Next (compartida
+entre usuarios) ni en la URL. Guarda solo los ítems con una copia mínima de lo
+que se muestra (título, precio, miniatura, stock); el subtotal y el contador
+se derivan con selectores. Para evitar diferencias de hidratación entre
+servidor y cliente, el store se rehidrata al montar y el contador no se pinta
+hasta entonces. El impacto en memoria es mínimo: una lista pequeña de objetos
+planos.
 
 **Estilos.** Tailwind 4 con los tokens en `globals.css` y CSS Modules por
-componente (con `@reference` y `@apply` dentro de `@layer components`, para
-que las utilidades de Tailwind puedan sobrescribirlos). El tema usa
-selectores `[data-theme]` y `next-themes`.
+componente de `ui/` (con `@reference` y `@apply` dentro de `@layer components`,
+para que las utilidades de Tailwind puedan sobrescribirlos). El tema usa
+selectores `[data-theme]` y `next-themes`. La tipografía es una escala única
+de utilidades `typo-*`.
 
-**Carrito (decisión planificada).** Zustand con `persist`, detrás de una
-fachada `useCart()`. Es estado propio de cada usuario, así que no encaja en la
-caché de Next ni en la URL; la fachada permite pasar a un carrito de servidor
-más adelante sin tocar los componentes. El razonamiento completo está en
-[`docs/architecture.md`](docs/architecture.md#gestión-de-estado).
+## Limitaciones conocidas
+
+- **El carrito es local.** Vive en el navegador: no se sincroniza entre
+  dispositivos y el servidor no valida precio ni stock. Está diseñado para
+  poder pasar a un carrito de servidor sin cambiar la interfaz.
+- **El pago no está implementado.** El botón de pago del carrito está
+  deshabilitado; queda fuera del alcance del reto.
+- **Textos de la API.** Los nombres de categorías y los datos de envío,
+  garantía y devoluciones vienen en inglés y se muestran tal cual.
+- **Datos de ejemplo.** DummyJSON es una API de pruebas: algunos valores (por
+  ejemplo, el pedido mínimo de ciertos productos) no son realistas.
+- **Descuento.** La tarjeta y el detalle muestran el precio de la API como
+  precio actual y calculan el precio anterior a partir del porcentaje de
+  descuento.
 
 ## Estado frente al reto
 
-| Requisito                                              | Estado |
-| ------------------------------------------------------ | ------ |
-| Listado renderizado en servidor (Server Components)    | Hecho  |
-| Paginación en la URL, compartible e indexable          | Hecho  |
-| Filtro por categorías en la URL                        | Pendiente: el servicio de categorías existe, falta la interfaz |
-| Búsqueda por texto u ordenamiento                      | Pendiente |
-| Ruta dinámica `/products/[id]`                         | Hecho (la vista del detalle está por completar) |
-| Metadata dinámica (título, descripción, Open Graph)    | Hecho  |
-| Botón "Agregar al carrito" con estado global en el header | Pendiente |
-| Optimización de imágenes y lazy loading                | En curso |
-| Streaming con Suspense y skeletons                     | Pendiente |
-| Manejo de errores (`error.tsx`) y estados vacíos       | Errores y 404 hechos; falta el estado vacío |
-| Configuración de caché y revalidación                  | Hecho en el listado; pendiente en detalle y categorías |
-| Pruebas unitarias o de integración                     | Pendiente |
-| Datos estructurados JSON-LD de producto                | El componente existe; falta renderizarlo en el detalle |
+| Requisito                                                  | Estado |
+| ---------------------------------------------------------- | ------ |
+| Listado renderizado en servidor (Server Components)        | Hecho  |
+| Filtro por categorías en la URL, compartible e indexable   | Hecho  |
+| Paginación en la URL                                       | Hecho  |
+| Búsqueda por texto u ordenamiento                          | Pendiente |
+| Ruta dinámica `/products/[id]`                             | Hecho  |
+| Metadata dinámica (título, descripción, Open Graph)        | Hecho  |
+| Datos estructurados JSON-LD de producto                    | Hecho  |
+| «Agregar al carrito» con estado global y contador en header | Hecho |
+| Justificación de la estrategia de estado del carrito       | Hecho (ver [Decisiones técnicas](#decisiones-técnicas)) |
+| Optimización de imágenes y lazy loading                    | En curso: `next/image` con `sizes` y `priority` en lo visible; falta medir con Lighthouse |
+| Streaming con Suspense y skeletons                         | Pendiente |
+| Manejo de errores (`error.tsx`), 404 y estados vacíos      | Errores, 404 y carrito vacío hechos; falta el estado vacío del listado |
+| Caché y revalidación                                       | Hecho (tags y `revalidate`); la invalidación a demanda no está implementada |
+| Pruebas unitarias o de integración                         | Pendiente |
+| README con instrucciones de ejecución                      | Hecho  |
+| Repositorio público                                        | [Hecho](https://github.com/FernandoLBA/flba-next-commerce) |
 
-Próximos pasos, por orden: filtros, búsqueda y orden en la URL; vista del
-detalle; carrito con estado global; pruebas; skeletons y estados vacíos.
+Próximos pasos, por orden: búsqueda y orden en la URL; pruebas (Vitest sobre
+el store y las utilidades, Playwright sobre el flujo de compra); skeletons y
+estados vacíos; medición de rendimiento.
 
 ## Autor
 
