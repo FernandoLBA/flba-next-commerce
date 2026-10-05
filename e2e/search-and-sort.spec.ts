@@ -5,7 +5,6 @@ const searchBox = (page: Page) =>
 const sortSelect = (page: Page) =>
   page.getByRole("combobox", { name: "Ordenar por" });
 
-/** Precios de las tarjetas visibles, en el orden en que aparecen. */
 const cardPrices = async (page: Page) =>
   (await page.locator("article .typo-price").allTextContents()).map((text) =>
     Number(text.replace(/[^\d.]/g, "")),

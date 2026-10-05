@@ -130,6 +130,7 @@ cambiarlas exige volver a construir.
 | `pnpm build`    | Build de producción                   |
 | `pnpm start`    | Sirve el build de producción          |
 | `pnpm lint`     | ESLint, incluidas las reglas de capas |
+| `pnpm typecheck` | Genera los tipos de rutas de Next y ejecuta TypeScript |
 | `pnpm test`     | Pruebas unitarias y de integración (Vitest) |
 | `pnpm test:watch` | Vitest en modo observador          |
 | `pnpm test:e2e` | Pruebas extremo a extremo (Playwright) |

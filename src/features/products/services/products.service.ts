@@ -10,7 +10,6 @@ import {
 import { productsCache } from "./products.cache";
 import { productsRoutes } from "./products.routes";
 
-//* Solo requiero estos campos en la app;
 const LIST_FIELDS =
   "id,title,category,brand,price,discountPercentage,stock,rating,thumbnail";
 

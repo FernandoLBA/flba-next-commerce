@@ -22,10 +22,8 @@ export const ProductDetailView = ({ product }: { product: Product }) => {
   return (
     <article className="mx-auto flex w-full max-w-7xl flex-col gap-10">
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
-        {/* IMÁGENES */}
         <ProductGallery images={images} title={product.title} />
 
-        {/* DETALLES DEL PRODUCTO */}
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-2">
             <p className="typo-caption uppercase text-muted">
@@ -42,7 +40,6 @@ export const ProductDetailView = ({ product }: { product: Product }) => {
             </div>
           </div>
 
-          {/* PRECIOS */}
           <div className="flex items-center gap-4">
             <p className="typo-title">
               <span className="font-bold typo-currency">
@@ -63,17 +60,14 @@ export const ProductDetailView = ({ product }: { product: Product }) => {
             </AppBadge>
           </div>
 
-          {/* STOCK */}
           {outOfStock && (
             <AppBadge className="w-fit" variant="destructive">
               {appMessages.PRODUCT_DETAIL.OUT_OF_STOCK}
             </AppBadge>
           )}
 
-          {/* DESCRIPCIÓN */}
           <p className="typo-body">{product.description}</p>
 
-          {/* AGREGAR AL CARRITO */}
           <AddToCartButton
             item={{
               id: product.id,
@@ -84,7 +78,6 @@ export const ProductDetailView = ({ product }: { product: Product }) => {
             }}
           />
 
-          {/* ENVÍO Y GARANTIA */}
           {details.length > 0 && (
             <dl className="grid gap-3 sm:grid-cols-2">
               {details.map(({ label, value }) => (

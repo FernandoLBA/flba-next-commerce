@@ -21,7 +21,7 @@ export const request = async <T>(
       ...headers,
     },
     body: body !== undefined ? JSON.stringify(body) : undefined,
-    ...init, //? aqui vienen el revalidate y tags (chaché de next)
+    ...init,
   });
 
   const data = res.status === 204 ? null : await res.json().catch(() => null);

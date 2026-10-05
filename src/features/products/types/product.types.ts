@@ -11,7 +11,6 @@ export type Product = {
   title: string;
   description: string;
   category: string;
-  /** La API no lo envía en todos los productos (por ejemplo, groceries). */
   brand?: string;
   price: number;
   discountPercentage: number;

@@ -18,7 +18,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  //? Muestra cada fetch con el estado de caché
   logging: {
     fetches: { fullUrl: true },
   },

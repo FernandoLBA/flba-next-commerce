@@ -9,7 +9,6 @@ export const Footer = () => {
   return (
     <footer className="border-t bg-black text-primary">
       <div className="flex flex-col items-center gap-3 px-6 py-6 typo-body-sm md:flex-row md:justify-between">
-        {/* Marca */}
         <AppLink
           href={appRoutes.HOME.BASE}
           aria-label={`${appSettings.APP_NAME} - Inicio`}

@@ -17,13 +17,11 @@ export const perfume: CartItemInput = {
   price: 19.99,
 };
 
-/** Equivale a lo que hace CartHydrator al montar la app. */
 export const hydrateCart = () =>
   act(async () => {
     await useCartStore.persist.rehydrate();
   });
 
-/** Deja el carrito con unos ítems y marcado como hidratado. */
 export const seedCart = async (items: { item: CartItemInput; quantity: number }[]) => {
   useCartStore.setState({ items: [] });
   items.forEach(({ item, quantity }) => useCartStore.getState().add(item, quantity));

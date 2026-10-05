@@ -17,7 +17,6 @@ export const NavBar = () => {
   return (
     <nav className="w-full border-b fixed bg-black text-primary z-10">
       <div className="flex justify-between h-12 items-center px-6">
-        {/* Marca */}
         <AppLink href={appRoutes.HOME.BASE}>
           <div className="flex items-center gap-1">
             <Code />
@@ -26,10 +25,8 @@ export const NavBar = () => {
           </div>
         </AppLink>
 
-        {/* Icono menu mobile */}
         <MobileMenu />
 
-        {/* Menu desktop */}
         <div className="hidden md:flex justify-between gap-3">
           {navLinks.map((nl) => (
             <AppLink

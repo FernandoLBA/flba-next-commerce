@@ -46,6 +46,19 @@ const eslintConfig = defineConfig([
     files: ["src/app/**/*.{ts,tsx}"],
     rules: restrict(noFeatureInternals),
   },
+  {
+    files: ["**/*.{ts,tsx}"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { ignoreRestSiblings: true },
+      ],
+    },
+  },
+  {
+    files: ["vitest/**/*.tsx"],
+    rules: { "@next/next/no-img-element": "off" },
+  },
   globalIgnores([
     ".next/**",
     "out/**",
