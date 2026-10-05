@@ -14,7 +14,7 @@ export const appSettings = {
   },
   REPO_URL: "https://github.com/FernandoLBA/flba-next-commerce",
   DEPLOY_URL: "https://flba-next-commerce.vercel.app",
-  CHALLENGE_VIDEO_ID: "",
+  CHALLENGE_VIDEO_ID: "11eP7ht7npU",
   CURRENCY: {
     CODE: "PEN",
     SYMBOL: "S/",

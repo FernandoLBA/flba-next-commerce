@@ -6,7 +6,11 @@ type YoutubeEmbedProps = {
 
 const VIDEO_ID_PATTERN = /^[\w-]{11}$/;
 
-export const YoutubeEmbed = ({ videoId, title, fallback }: YoutubeEmbedProps) => {
+export const YoutubeEmbed = ({
+  videoId,
+  title,
+  fallback,
+}: YoutubeEmbedProps) => {
   if (!videoId || !VIDEO_ID_PATTERN.test(videoId)) {
     return (
       <div className="flex-center aspect-video rounded-lg border border-dashed border-border bg-secondary p-6 text-center">

@@ -18,7 +18,10 @@ export const AboutView = () => {
 
       <ProfileCard />
 
-      <section aria-labelledby="about-video-title" className="flex flex-col gap-4">
+      <section
+        aria-labelledby="about-video-title"
+        className="flex flex-col gap-4"
+      >
         <h2 id="about-video-title" className="typo-subtitle">
           {text.VIDEO_TITLE}
         </h2>
@@ -28,6 +31,10 @@ export const AboutView = () => {
           title={text.VIDEO_IFRAME_TITLE}
           fallback={text.VIDEO_SOON}
         />
+        <p className="typo-body-sm md:typo-body text-muted">
+          <b>IMPORTANTE:</b> Hubo problemas técnicos con las herramientas de
+          grabación del video
+        </p>
       </section>
 
       <section
@@ -62,7 +69,10 @@ export const AboutView = () => {
         </div>
       </section>
 
-      <section aria-labelledby="about-readme-title" className="flex flex-col gap-4">
+      <section
+        aria-labelledby="about-readme-title"
+        className="flex flex-col gap-4"
+      >
         <h2 id="about-readme-title" className="typo-subtitle">
           {text.README_TITLE}
         </h2>
