@@ -1,20 +1,29 @@
 import { Pagination } from "@/shared/components/ui";
 import { AppPagination } from "@/shared/types/app-pagination.type";
+import { CategorySidebar } from "../components/category-sidebar/category-sidebar";
 import { ProductList } from "../components/product-list/product-list";
 import type { Product } from "../types/product.types";
 
 export const ProductsFeatureView = async ({
   paginatedProducts,
+  activeCategory,
 }: {
   paginatedProducts: AppPagination<"products", Product>;
+  activeCategory: string;
 }) => {
   const { page, products, totalPages } = paginatedProducts;
 
   return (
-    <section className="w-full flex flex-col items-center">
-      <ProductList products={products} headingLevel={1} />
+    <div className="mx-auto w-full max-w-7xl gap-8 grid lg:grid-cols-[14rem_1fr]">
+      {<CategorySidebar activeCategory={activeCategory} />}
 
-      <Pagination page={page} totalPages={totalPages} />
-    </section>
+      <section className="flex w-full flex-col items-center">
+        {products.length !== 0 && (
+          <ProductList products={products} headingLevel={1} />
+        )}
+
+        {totalPages !== 0 && <Pagination page={page} totalPages={totalPages} />}
+      </section>
+    </div>
   );
 };

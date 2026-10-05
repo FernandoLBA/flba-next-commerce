@@ -15,8 +15,14 @@ const ProductListingPage = async (props: ProductListingPage) => {
   const res = await getProducts({ ...filters, page });
 
   if (page > res.totalPages) notFound();
+  if (filters.category && res.products.length === 0) notFound();
 
-  return <ProductsFeatureView paginatedProducts={res} />;
+  return (
+    <ProductsFeatureView
+      paginatedProducts={res}
+      activeCategory={filters.category ?? ""}
+    />
+  );
 };
 
 export default ProductListingPage;

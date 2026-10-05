@@ -1,3 +1,5 @@
+// "use client"
+
 import {
   AppButton,
   AppCartButton,
@@ -11,6 +13,8 @@ import {
   AppDrawerTitle,
 } from "@/shared/components/ui/app-drawer/app-drawer";
 import { appMessages } from "@/shared/constants/app.messages";
+import { appRoutes } from "@/shared/constants/app.routes";
+import { useCategories } from "@/shared/providers/categories-provider";
 import { X } from "lucide-react";
 import { Footer } from "../../../footer/footer";
 import { navLinks } from "../../lib/constants/nav-links";
@@ -21,6 +25,7 @@ type MenuDrawerProps = {
 };
 
 export const MenuDrawer = ({ open, onClose }: MenuDrawerProps) => {
+  const categories = useCategories();
   const text = appMessages.MENU;
 
   return (
@@ -53,16 +58,15 @@ export const MenuDrawer = ({ open, onClose }: MenuDrawerProps) => {
 
           <AppDrawerTitle>{text.CATEGORIES}</AppDrawerTitle>
 
-          {/* TODO: reemplazar por las categorías del contexto (useNavCategories) */}
           <ul className="mt-6 px-2">
-            {navLinks.map((nl) => (
-              <li key={nl.label} className="flex-y-between gap-2 h-10">
+            {categories.map((category) => (
+              <li key={category.slug} className="flex-y-between gap-2 h-10">
                 <AppLink
                   className="link-drawer"
-                  href={nl.url}
+                  href={appRoutes.PRODUCTS.byCategory(category.slug)}
                   onClick={onClose}
                 >
-                  {nl.label}
+                  {category.name}
                 </AppLink>
               </li>
             ))}
