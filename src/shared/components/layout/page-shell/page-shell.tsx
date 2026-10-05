@@ -3,10 +3,10 @@ import { Footer } from "../footer/footer";
 import { Header } from "../header/header";
 
 export const PageShell = ({ children }: { children: ReactNode }) => (
-  <div className="flex min-h-screen flex-col">
+  <div className="flex-y-between min-h-screen">
     <Header />
 
-    <main className="flex-1 px-5 pt-20">{children}</main>
+    <main className="flex-1 px-5 py-20">{children}</main>
 
     <Footer />
   </div>

@@ -1,0 +1,24 @@
+@reference "../../../../app/globals.css";
+
+@layer components {
+  .base {
+    @apply hover:opacity-80;
+  }
+
+  .link {
+    @apply typo-label text-primary;
+  }
+
+  .button,
+  .outline {
+    @apply typo-label inline-flex items-center justify-center rounded-md px-9 py-2;
+  }
+
+  .button {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  .outline {
+    @apply border border-primary bg-transparent text-primary;
+  }
+}

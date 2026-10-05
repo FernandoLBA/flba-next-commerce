@@ -1,14 +1,15 @@
 import { cn } from "@/shared/utils/cn";
 import { ComponentProps } from "react";
+import styles from "./app-button.module.css";
 
 type AppButtonProps = ComponentProps<"button"> & {
   variant?: "default" | "outline" | "ghost";
 };
 
-const variants = {
-  default: "bg-primary text-primary-foreground",
-  outline: "bg-transparent border border-primary text-primary",
-  ghost: "p-0 bg-transparent text-primary cursor-pointer",
+const variantClasses = {
+  default: styles.variantDefault,
+  outline: styles.variantOutline,
+  ghost: styles.variantGhost,
 };
 
 export const AppButton = ({
@@ -19,11 +20,7 @@ export const AppButton = ({
 }: AppButtonProps) => (
   <button
     type={type}
-    className={cn(
-      "px-9 py-2 rounded-md text-sm hover:opacity-80",
-      variants[variant],
-      className,
-    )}
+    className={cn(styles.button, variantClasses[variant], className)}
     {...props}
   />
 );

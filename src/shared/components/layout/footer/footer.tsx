@@ -8,7 +8,7 @@ export const Footer = () => {
 
   return (
     <footer className="border-t bg-black text-primary">
-      <div className="flex flex-col items-center gap-3 px-6 py-6 text-sm md:flex-row md:justify-between">
+      <div className="flex flex-col items-center gap-3 px-6 py-6 typo-body-sm md:flex-row md:justify-between">
         {/* Marca */}
         <AppLink
           href={appRoutes.HOME.BASE}
@@ -17,7 +17,7 @@ export const Footer = () => {
           <div className="flex items-center gap-1">
             <Code />
 
-            <span>{appSettings.APP_NAME}</span>
+            <span className="typo-label">{appSettings.APP_NAME}</span>
           </div>
         </AppLink>
 

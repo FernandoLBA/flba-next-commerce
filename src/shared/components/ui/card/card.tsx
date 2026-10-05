@@ -1,44 +1,30 @@
 import { cn } from "@/shared/utils/cn";
 import { ComponentProps } from "react";
+import styles from "./card.module.css";
 
 export const Card = ({ className, ...props }: ComponentProps<"article">) => (
-  <article
-    className={cn(
-      "flex h-full w-full flex-col overflow-hidden rounded-lg border border-primary",
-      className,
-    )}
-    {...props}
-  />
+  <article className={cn(styles.card, className)} {...props} />
 );
 
 export const CardMedia = ({ className, ...props }: ComponentProps<"div">) => (
-  <div
-    className={cn(
-      "relative aspect-square overflow-hidden border-b border-primary",
-      className,
-    )}
-    {...props}
-  />
+  <div className={cn(styles.media, className)} {...props} />
 );
 
 export const CardContent = ({ className, ...props }: ComponentProps<"div">) => (
-  <div className={cn("flex-1 p-3 md:p-4", className)} {...props} />
+  <div className={cn(styles.content, className)} {...props} />
 );
 
 export const CardTitle = ({ className, ...props }: ComponentProps<"h3">) => (
-  <h3 className={cn("text-primary font-semibold", className)} {...props} />
+  <h3 className={cn(styles.title, className)} {...props} />
 );
 
 export const CardDescription = ({
   className,
   ...props
 }: ComponentProps<"p">) => (
-  <p className={cn("uppercase", className)} {...props} />
+  <p className={cn(styles.description, className)} {...props} />
 );
 
 export const CardFooter = ({ className, ...props }: ComponentProps<"div">) => (
-  <div
-    className={cn("mt-auto w-full border-t border-primary", className)}
-    {...props}
-  />
+  <div className={cn(styles.footer, className)} {...props} />
 );

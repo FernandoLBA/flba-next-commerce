@@ -1,0 +1,27 @@
+@reference "../../../../app/globals.css";
+
+@layer components {
+  .card {
+    @apply flex h-full w-full flex-col overflow-hidden rounded-lg border border-primary/20 hover:border-primary;
+  }
+
+  .media {
+    @apply relative aspect-square overflow-hidden border-b border-primary/20;
+  }
+
+  .content {
+    @apply flex-1 p-3 md:p-4;
+  }
+
+  .title {
+    @apply typo-heading text-primary;
+  }
+
+  .description {
+    @apply typo-caption uppercase text-muted;
+  }
+
+  .footer {
+    @apply mt-auto w-full border-t border-primary/20;
+  }
+}

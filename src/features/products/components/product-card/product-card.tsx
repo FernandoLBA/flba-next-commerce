@@ -1,4 +1,5 @@
 import {
+  AppBadge,
   AppButton,
   AppLink,
   Card,
@@ -8,9 +9,12 @@ import {
   CardMedia,
   CardTitle,
 } from "@/shared/components/ui";
+import { appMessages } from "@/shared/constants/app.messages";
 import { appRoutes } from "@/shared/constants/app.routes";
 import { appSettings } from "@/shared/constants/app.settings";
+import { addPercentage } from "@/shared/utils/percentage";
 import { truncate } from "@/shared/utils/truncate";
+import { Star } from "lucide-react";
 import Image from "next/image";
 import { Product } from "../../types/product.types";
 
@@ -19,7 +23,8 @@ type ProductCardProps = {
 };
 
 export const ProductCard = ({ product }: ProductCardProps) => {
-  const fallbackImage = `${appRoutes.IMAGES.BASE}/parfum-men.jpg`;
+  const productImage =
+    product.thumbnail ?? `${appRoutes.IMAGES.BASE}/parfum-men.jpg`;
 
   return (
     <Card>
@@ -27,37 +32,50 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         href={`${appRoutes.PRODUCTS.BASE}/${product.id}`}
         className="block"
       >
-        <CardMedia>
+        <CardMedia className="relative">
           <Image
             className="object-cover"
-            src={fallbackImage}
+            src={productImage}
             alt={product.title}
             fill
             sizes="(min-width: 1024px) 25vw, 50vw"
             loading="eager"
           />
+
+          <AppBadge className="absolute top-2 right-2" variant="destructive">
+            - {product.discountPercentage.toFixed(1)}%
+          </AppBadge>
         </CardMedia>
       </AppLink>
 
       <CardContent>
-        <CardTitle className="text-xs">{product.brand}</CardTitle>
-        <CardDescription className="text-sm">
-          {truncate(product.title, 25)}
+        <CardDescription>
+          {product.brand ?? appMessages.COMMON.NO_BRAND}
         </CardDescription>
+        <CardTitle className="text-foreground">
+          {truncate(product.title, 25)}
+        </CardTitle>
       </CardContent>
 
       <CardFooter>
-        <div className="flex items-center justify-between px-3 py-2 md:px-4">
-          <p className="text-destructive line-through text-sm">
-            {`${appSettings.CURRENCY.SYMBOL} ${(product.price + product.price * 0.3).toFixed(2)}`}
-          </p>
+        <div className="flex-x-between px-4">
+          <div className="flex-center gap-1">
+            <Star className="size-4 text-yellow-500 fill-yellow-500" />
+            <span className="typo-body-sm">{product.rating}</span>
+          </div>
 
-          <p className="text-lg">
-            <span className="align-super text-xs">
-              {appSettings.CURRENCY.SYMBOL}
-            </span>
-            {` ${product.price.toFixed(2)}`}
-          </p>
+          <div className=" px-3 py-2 md:px-0">
+            <p className="typo-price-old text-destructive">
+              {`${appSettings.CURRENCY.SYMBOL} ${addPercentage(product.price, product.discountPercentage)}`}
+            </p>
+
+            <p className="typo-price">
+              <span className="typo-currency">
+                {appSettings.CURRENCY.SYMBOL}
+              </span>
+              {` ${product.price.toFixed(2)}`}
+            </p>
+          </div>
         </div>
 
         <AppButton className="w-full rounded-none">Agregar al carro</AppButton>

@@ -16,4 +16,10 @@ export const appMessages = {
     BACK_HOME_BUTTON: "Volver al inicio",
     REFERENCE: "Referencia:",
   },
+  HOME: {
+    BANNER_ALT: "Ver todos los productos",
+  },
+  COMMON: {
+    NO_BRAND: "Genérico",
+  }
 };

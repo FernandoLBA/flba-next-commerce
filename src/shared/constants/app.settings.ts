@@ -10,6 +10,6 @@ export const appSettings = {
     CODE: "PEN",
     SYMBOL: "S/",
   },
-  PRODUCTS_LIMIT: 8,
+  PRODUCTS_LIMIT: 20,
   CATEGORIES_LIMIT: 8,
 };

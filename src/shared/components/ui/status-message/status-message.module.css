@@ -1,0 +1,23 @@
+@reference "../../../../app/globals.css";
+
+@layer components {
+  .root {
+    @apply flex flex-col items-center justify-center gap-4 py-16 text-center md:py-24;
+  }
+
+  .code {
+    @apply typo-display text-primary-text;
+  }
+
+  .title {
+    @apply typo-title;
+  }
+
+  .description {
+    @apply typo-body max-w-md text-muted;
+  }
+
+  .actions {
+    @apply mt-4 flex flex-wrap justify-center gap-3;
+  }
+}

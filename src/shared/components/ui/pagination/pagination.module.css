@@ -1,0 +1,27 @@
+@reference "../../../../app/globals.css";
+
+@layer components {
+  .root {
+    @apply my-8 flex items-center gap-2 text-secondary;
+  }
+
+  .pages {
+    @apply hidden gap-2 md:flex;
+  }
+
+  .page {
+    @apply typo-label text-foreground hover:font-bold;
+  }
+
+  .pageActive {
+    @apply border-b font-extrabold;
+  }
+
+  .arrow {
+    @apply rounded-full bg-primary p-1 text-primary-foreground hover:opacity-80;
+  }
+
+  .mobilePage {
+    @apply typo-label block md:hidden;
+  }
+}

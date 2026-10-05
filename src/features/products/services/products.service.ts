@@ -1,31 +1,74 @@
 import { api } from "@/shared/api/client";
 import { appSettings } from "@/shared/constants/app.settings";
-import { ApiResponse, PaginatedResponse } from "@/shared/types/api-response";
-import { Product, ProductFilters } from "../types/product.types";
+import { PaginatedResponse } from "@/shared/types/api-response.type";
+import { toPagination } from "@/shared/utils/pagination";
+import {
+  Product,
+  ProductCategory,
+  ProductFilters,
+} from "../types/product.types";
 import { productsRoutes } from "./products.routes";
 
-export const getProducts = async (filters?: ProductFilters) => {
-  const products = await api.get<PaginatedResponse<Product>>(
-    productsRoutes.PRODUCTS,
-    {
-      params: {
-        ...filters,
-        limit: filters?.limit ?? appSettings.PRODUCTS_LIMIT,
-      },
-      next: { tags: ["products"] },
-    },
-  );
+//* Solo requiero estos campos en la app;
+const LIST_FIELDS =
+  "id,title,category,brand,price,discountPercentage,stock,rating,thumbnail";
 
-  return products.data;
+/**
+ * Trae todos los productos filtrados por categoría y paginados
+ * @param filters
+ * @returns
+ */
+export const getProducts = async (filters?: ProductFilters) => {
+  const limit = filters?.limit ?? appSettings.PRODUCTS_LIMIT;
+  const page = filters?.page ?? 1;
+  const apiUrl = filters?.category
+    ? productsRoutes.CATEGORIES.byCategorySlug(filters.category)
+    : productsRoutes.PRODUCTS.BASE;
+
+  const res = await api.get<PaginatedResponse<"products", Product>>(apiUrl, {
+    params: {
+      ...filters,
+      limit,
+      skip: (page - 1) * limit,
+      select: LIST_FIELDS,
+    },
+    next: { tags: ["products"], revalidate: 60 },
+  });
+
+  return {
+    products: res.products,
+    ...toPagination(res),
+  };
 };
 
+/**
+ * Trae un producto por ID
+ * @param id
+ * @returns
+ */
 export const getProductById = async (id: string) => {
-  const product = await api.get<ApiResponse<Product>>(
-    `${productsRoutes.PRODUCTS}/${id}`,
+  const product = await api.get<Product>(
+    productsRoutes.PRODUCTS.byProductId(id),
     {
       next: { tags: ["products", `product-${id}`] },
     },
   );
 
-  return product.data;
+  return product;
+};
+
+/**
+ * Trae todas las categorías
+ * Parece que esta api no acepta filtros
+ * @returns
+ */
+export const getCategories = async () => {
+  const categories = await api.get<ProductCategory[]>(
+    productsRoutes.CATEGORIES.BASE,
+    {
+      next: { tags: ["categories"] },
+    },
+  );
+
+  return categories;
 };

@@ -1,0 +1,35 @@
+@reference "../../../../app/globals.css";
+
+@layer components {
+  .drawer {
+    @apply fixed bottom-0 z-8 h-dvh w-full border-0 border-primary bg-background pt-15 md:w-80;
+  }
+
+  .right {
+    @apply right-0 md:border-l;
+  }
+
+  .left {
+    @apply left-0 md:border-r;
+  }
+
+  .inner {
+    @apply flex h-full flex-col justify-between;
+  }
+
+  .content {
+    @apply flex-1 overflow-y-auto;
+  }
+
+  .title {
+    @apply typo-heading;
+  }
+
+  .description {
+    @apply typo-body-sm text-muted;
+  }
+
+  .footer {
+    @apply shrink-0;
+  }
+}

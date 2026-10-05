@@ -1,0 +1,19 @@
+@reference "../../../../app/globals.css";
+
+@layer components {
+  .button {
+    @apply typo-label px-9 py-2 rounded-md hover:opacity-80;
+  }
+
+  .variantDefault {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  .variantOutline {
+    @apply bg-transparent border border-primary text-primary;
+  }
+
+  .variantGhost {
+    @apply p-0 bg-transparent text-primary cursor-pointer;
+  }
+}

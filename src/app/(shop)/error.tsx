@@ -33,7 +33,7 @@ export default function ErrorPage({ error, retry }: ErrorPageProps) {
       }
     >
       {error.digest && (
-        <p className="text-xs text-muted">{`${appMessages.ERROR_PAGE.REFERENCE} ${error.digest}`}</p>
+        <p className="typo-caption text-muted">{`${appMessages.ERROR_PAGE.REFERENCE} ${error.digest}`}</p>
       )}
     </StatusMessage>
   );

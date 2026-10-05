@@ -1,4 +1,4 @@
-import { MenuDrawer } from "./components/menu-drawer/menu-drawer";
+// import { MenuDrawer } from "./components/menu-drawer/menu-drawer";
 import { NavBar } from "./components/nav-bar";
 
 export const Header = () => {
@@ -6,7 +6,7 @@ export const Header = () => {
     <header>
       <NavBar />
 
-      <MenuDrawer />
+      {/* <MenuDrawer /> */}
     </header>
   );
 };

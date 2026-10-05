@@ -1,0 +1,23 @@
+@reference "../../../../app/globals.css";
+
+@layer components {
+  .badge {
+    @apply typo-caption flex-center px-6 py-1 font-bold rounded-md;
+  }
+
+  .success {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  .warning {
+    @apply bg-yellow-500 text-primary-foreground;
+  }
+
+  .destructive {
+    @apply bg-destructive text-white;
+  }
+
+  .muted {
+    @apply bg-muted text-gray-300;
+  }
+}

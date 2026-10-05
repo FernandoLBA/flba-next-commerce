@@ -1,5 +1,6 @@
 import { cn } from "@/shared/utils/cn";
 import type { ComponentProps, ReactNode } from "react";
+import styles from "./status-message.module.css";
 
 type StatusMessageProps = Omit<ComponentProps<"section">, "title"> & {
   code?: string;
@@ -19,31 +20,20 @@ export const StatusMessage = ({
   children,
   ...props
 }: StatusMessageProps) => (
-  <section
-    className={cn(
-      "flex flex-col items-center justify-center gap-4 py-16 text-center md:py-24",
-      className,
-    )}
-    {...props}
-  >
+  <section className={cn(styles.root, className)} {...props}>
     {icon}
 
     {code && (
-      <p
-        aria-hidden
-        className="text-7xl font-bold text-primary-text md:text-9xl"
-      >
+      <p aria-hidden className={styles.code}>
         {code}
       </p>
     )}
 
-    <h1 className="text-2xl font-bold md:text-3xl">{title}</h1>
+    <h1 className={styles.title}>{title}</h1>
 
-    {description && <p className="max-w-md text-muted">{description}</p>}
+    {description && <p className={styles.description}>{description}</p>}
 
-    {actions && (
-      <div className="mt-4 flex flex-wrap justify-center gap-3">{actions}</div>
-    )}
+    {actions && <div className={styles.actions}>{actions}</div>}
 
     {children}
   </section>

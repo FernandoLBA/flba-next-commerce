@@ -1,10 +1,13 @@
 @import "tailwindcss";
 
+/* `dark:` sigue al atributo que escribe next-themes, no solo al sistema operativo */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /* Tokens de diseño: aquí solo se definen los valores por tema (light / dark) */
 :root {
   color-scheme: light;
 
-  --background: #ffffff;
+  --background: #f9f7f7;
   --foreground: #171717;
   --muted: #6b7280;
   --border: #e5e7eb;
@@ -59,9 +62,51 @@
 @utility flex-x-end {
   @apply flex items-center justify-end;
 }
+
 /* Corregir */
 @utility flex-y-end { 
   @apply flex flex-col place-content-end;
+}
+
+@utility flex-center {
+  @apply flex justify-center items-center;
+}
+
+/*
+ * Tipografía de la app.
+ */
+@utility typo-display {
+  @apply text-7xl font-bold md:text-9xl;
+}
+@utility typo-title {
+  @apply text-2xl font-bold md:text-3xl;
+}
+@utility typo-subtitle {
+  @apply text-xl font-bold md:text-2xl;
+}
+@utility typo-heading {
+  @apply text-sm font-semibold md:text-base;
+}
+@utility typo-body {
+  @apply text-base;
+}
+@utility typo-body-sm {
+  @apply text-sm;
+}
+@utility typo-label {
+  @apply text-sm font-medium;
+}
+@utility typo-caption {
+  @apply text-xs;
+}
+@utility typo-price {
+  @apply text-lg font-semibold;
+}
+@utility typo-price-old {
+  @apply text-sm line-through;
+}
+@utility typo-currency {
+  @apply align-super text-xs;
 }
 
 @utility link-drawer {
@@ -71,5 +116,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  @apply font-sans;
+  @apply font-sans typo-body;
 }

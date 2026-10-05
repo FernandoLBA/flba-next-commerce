@@ -1,0 +1,7 @@
+@reference "../../../../app/globals.css";
+
+@layer components {
+  .placeholder {
+    @apply inline-block size-6;
+  }
+}

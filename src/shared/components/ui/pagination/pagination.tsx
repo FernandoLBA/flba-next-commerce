@@ -2,8 +2,9 @@
 
 import { cn } from "@/shared/utils/cn";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { AppLink } from "../app-link/app-link";
+import styles from "./pagination.module.css";
 
 type PaginationProps = {
   page: number;
@@ -24,48 +25,38 @@ export const Pagination = ({ page, totalPages }: PaginationProps) => {
   };
 
   return (
-    <div className="flex gap-2 my-8 items-center text-secondary">
+    <div className={styles.root}>
       {parsedPage !== 1 && (
-        <AppLink
-          href={buildHref(parsedPage - 1)}
-          className={cn(
-            "hover:opacity-80 bg-primary p-1 rounded-full text-primary-foreground",
-          )}
-        >
+        <Link href={buildHref(parsedPage - 1)} className={styles.arrow}>
           <ChevronLeft />
-        </AppLink>
+        </Link>
       )}
 
-      <div className="hidden md:flex gap-2">
+      <div className={styles.pages}>
         {Array.from({ length: +totalPages }).map((x, index) => {
           const selectedPage = index + 1;
 
           return (
-            <AppLink
+            <Link
               href={buildHref(selectedPage)}
               className={cn(
-                "hover:font-bold text-foreground",
-                selectedPage === parsedPage && "border-b font-extrabold",
+                styles.page,
+                selectedPage === parsedPage && styles.pageActive,
               )}
               key={index}
             >
               {selectedPage}
-            </AppLink>
+            </Link>
           );
         })}
       </div>
 
-      <div className="block md:hidden">{parsedPage}</div>
+      <div className={styles.mobilePage}>{parsedPage}</div>
 
       {parsedPage < totalPages && (
-        <AppLink
-          href={buildHref(parsedPage + 1)}
-          className={cn(
-            "hover:opacity-80 bg-primary p-1 rounded-full text-primary-foreground",
-          )}
-        >
+        <Link href={buildHref(parsedPage + 1)} className={styles.arrow}>
           <ChevronRight />
-        </AppLink>
+        </Link>
       )}
     </div>
   );

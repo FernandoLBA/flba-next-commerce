@@ -4,7 +4,7 @@ import { AppLink, ThemeToggle } from "@/shared/components/ui";
 import { appRoutes } from "@/shared/constants/app.routes";
 import { appSettings } from "@/shared/constants/app.settings";
 import { cn } from "@/shared/utils/cn";
-import { Code, EllipsisVertical, ShoppingCart, User } from "lucide-react";
+import { Code, EllipsisVertical, ShoppingCart } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { navLinks } from "../lib/constants/nav-links";
 
@@ -19,9 +19,7 @@ export const NavBar = () => {
           <div className="flex items-center gap-1">
             <Code />
 
-            <span className="text-sm">
-              {appSettings.APP_NAME}
-            </span>
+            <span className="typo-label">{appSettings.APP_NAME}</span>
           </div>
         </AppLink>
 
@@ -51,13 +49,6 @@ export const NavBar = () => {
 
             <AppLink href={appRoutes.CART.BASE}>
               <ShoppingCart />
-            </AppLink>
-
-            <AppLink
-              className="bg-primary rounded-full p-1 text-primary-foreground"
-              href={appRoutes.NOT_FOUND.BASE}
-            >
-              <User size={17} />
             </AppLink>
           </div>
         </div>

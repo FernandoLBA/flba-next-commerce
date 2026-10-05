@@ -4,18 +4,12 @@ export const appRoutes = {
   },
   PRODUCTS: {
     BASE: "/products",
-  },
-  ERROR: {
-    BASE: "/error-page",
-  },
-  NOT_FOUND: {
-    BASE: "/not-found",
+    byId: (id: string) => `/products/${id}`,
+    byCategory: (slug: string) =>
+      `/products?category=${encodeURIComponent(slug)}`,
   },
   CART: {
     BASE: "/cart",
-  },
-  AUTH: {
-    BASE: "/auth",
   },
   IMAGES: {
     BASE: "/images",

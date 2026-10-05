@@ -4,6 +4,7 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
 import { AppButton } from "../app-button/app-button";
+import styles from "./theme-toggle.module.css";
 
 const subscribe = () => () => {};
 
@@ -22,7 +23,7 @@ export const ThemeToggle = () => {
   const { theme = "system", setTheme } = useTheme();
   const mounted = useMounted();
 
-  if (!mounted) return <span className="inline-block size-6" />;
+  if (!mounted) return <span className={styles.placeholder} />;
 
   const current = theme as keyof typeof NEXT_THEME;
   const Icon = ICONS[current];

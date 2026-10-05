@@ -1,9 +1,18 @@
 import { cn } from "@/shared/utils/cn";
 import Link from "next/link";
 import { ComponentProps } from "react";
+import styles from "./app-link.module.css";
 
-export type AppLinkProps = ComponentProps<typeof Link>;
+export type AppLinkProps = ComponentProps<typeof Link> & {
+  variant?: "link" | "button" | "outline";
+};
 
-export const AppLink = ({ className, ...props }: AppLinkProps) => {
-  return <Link className={cn("text-sm text-primary hover:opacity-80", className)} {...props} />;
+export const AppLink = ({
+  className,
+  variant = "link",
+  ...props
+}: AppLinkProps) => {
+  return (
+    <Link className={cn(styles.base, styles[variant], className)} {...props} />
+  );
 };
